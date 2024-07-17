@@ -9,6 +9,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((800,600), pygame.RESIZABLE)
 
+
 assets.screen = screen
 
 Battle_text = dialog.dialoge("cosa devi fare?")
@@ -20,7 +21,7 @@ while True:
     if assets.mode == "menu":
         screen.fill((255,255,255))
         font = pygame.font.SysFont(None, round(Height/8))
-        TITOLO = font.render("SO MANY THINGS BATTLE ", True, (0,0,0))
+        TITOLO = font.render("dgjkdjsjkdfs", True, (0,0,0))
         WW, HH = TITOLO.get_size()
         screen.blit(TITOLO, (Width/2-WW/2, Height/4- HH/2))
         butt.updateButtons(screen)

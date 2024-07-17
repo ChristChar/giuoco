@@ -71,7 +71,25 @@ BattlersType = {"Gino":{"BaseStat":{"HP":104,"ATT":72,"MAGIC":37,"DIF":97,"FUN":
                           "moves":{"start":["IPER RAGGIO","Fissare"]},
                           "baseEXP": 312, 
                           "growth_rate": "Slow", 
-                          "EVS": {"HP":1,"DIF":2, "ATT":1}}}
+                          "EVS": {"HP":1,"DIF":2, "ATT":1}},
+                "Sole":{"BaseStat":{"HP":201,"ATT":48,"MAGIC":149,"DIF":176,"FUN":36,"VEL":32}, #643stat
+                          "types":["fuoco","luce"], 
+                          "moves":{"start":["IPER RAGGIO","Brilla","Lanciafiamme"]},
+                          "baseEXP": 436, 
+                          "growth_rate": 'Fluctuating', 
+                          "EVS": {"HP":2,"MAGIC":1,"DIF":2}},
+                "Wooper":{"BaseStat":{"HP":65,"ATT":55,"MAGIC":25,"DIF":50,"FUN":72,"VEL":20}, #287stat
+                          "types":["acqua","cute"], 
+                          "moves":{"start":["Pistolacqua","carineria","rugito"]},
+                          "baseEXP": 64, 
+                          "growth_rate": 'Fast', 
+                          "EVS": {"HP":1}},
+                "Pinguino":{"BaseStat":{"HP":82,"ATT":57,"MAGIC":43,"DIF":74,"FUN":57,"VEL":92}, #405stat
+                          "types":["acqua","ghiaccio","drago"], 
+                          "moves":{"start":["Pistolacqua","Dragoartigli","Geloraggio","rugito"]},
+                          "baseEXP": 102, 
+                          "growth_rate": 'Medium Fast', 
+                          "EVS": {"HP":1, "VEL":1}}}
 
 for i in BattlersType:
     BattlersType[i]["sprite"] = pygame.image.load("Files/image/Battlers/"+i+".png")

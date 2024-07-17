@@ -4,19 +4,19 @@ import ctypes
 import Files.scripts.functions as F
 import Files.scripts.assets as assets
 import Files.scripts.dialogue as dialog
+from Files.scripts.Data.types import types
 from Files.scripts.Data.Moves import MOVES
+from Files.scripts.Data.nature import NATURE
 import Files.scripts.pygameEventCycles as Cycles
 from Files.scripts.Data.Battlers import BattlersType
-from Files.scripts.Data.nature import NATURE
-from Files.scripts.Data.types import types
 
 score = 0
 
 class Battlers:
     def __init__(self, type, level, isEnemy = False):
         self.type = type
-        self.IV = {"HP":random.randint(0,31), "ATT":random.randint(0,31),"MAGIC":random.randint(0,31), 
-                   "DIF":random.randint(0,31), "FUN":random.randint(0,31),"VEL":random.randint(0,31)}
+        self.IV = {"HP":random.randint(0,62), "ATT":random.randint(0,62),"MAGIC":random.randint(0,62), 
+                   "DIF":random.randint(0,62), "FUN":random.randint(0,62),"VEL":random.randint(0,62)}
         self.level = level
         self.modificator = {"ATT":0,"MAGIC":0,"DIF":0, "FUN":0,"VEL":0, "PRECISIONE": 1, "ELUSIONE":1}
         self.EVS = {"HP":0, "ATT":0,"MAGIC":0,"DIF":0, "FUN":0,"VEL":0}
@@ -41,9 +41,9 @@ class Battlers:
             else:
                 EVS = 0
             if stat == "HP":
-                ThiseStat = round((2 * ThiseBaseStat + self.IV[stat] + EVS * self.level)  / 100) + self.level + 10
+                ThiseStat = round((2 * ThiseBaseStat + self.IV[stat] + EVS)  / 100 * self.level) + self.level + 10
             else:
-                ThiseStat = max(round((2 * ThiseBaseStat + self.IV[stat] + EVS * self.level)  / 100 + self.modificator[stat]) + 5, 1)
+                ThiseStat = max(round((2 * ThiseBaseStat + self.IV[stat] + EVS)  / 100 * self.level) + 5 + self.modificator[stat], 1)
             Stat_Calculated[stat] = ThiseStat
         for stat, molt in NATURE[self.natura].items():
             Stat_Calculated[stat] *= molt
@@ -218,11 +218,35 @@ class Battlers:
                     color = (70,70, 70)
                 Text = Sfont.render(f"{stat}: {round(value)}", True, color)
                 information.blit(Text, (10, 50*i))
-            Nature = font.render(f"Di natura {self.natura}", True, (0,0,0))
+            Nature = Sfont.render(f"Di natura {self.natura}", True,( 0,0,0))
             information.blit(Nature, (10, 50*7.5))
+            TypeText = "Tipo: "
+            for i, type in enumerate(BattlersType[self.type]["types"]):
+                TypeText += type
+                if i+1 < len(BattlersType[self.type]["types"]):
+                    TypeText += "/"
+            Type = Sfont.render(TypeText, True,(0,0,0))
+            information.blit(Type, (10, 50*8.5))
+            x = W / 3
+            y = H / 25
+            pygame.draw.rect(information, (0,0,0), (10, 50*10, x, y))
+            if self.HP < self.maxHP / 4:
+                lifeColor = (255,0,0)
+            elif self.HP < self.maxHP / 2:
+                lifeColor = (255,255,0)
+            else:
+                lifeColor = (0,255,0)
+            HpBarW = (x / self.maxHP) * self.HP
+            pygame.draw.rect(information, lifeColor, (10, 50*10, HpBarW, y))
+            pygame.draw.rect(information, (0,0,0), (10, 50*10.7, x, y/1.7))
+            ExpW = (x / self.ExpToLevelUp()) * self.EXP
+            pygame.draw.rect(information, (0,255,255), (10, 50*10.7, ExpW, y/1.7))
             screen.blit(information, (WIDTH-W, HEIGHT/2-H/2))
             for event in pygame.event.get():
                 Cycles.BaseCicle(event)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        viewing = False
             pygame.display.update()
 
 
@@ -319,7 +343,6 @@ battleAction = [["lotta", "borsa"],["Battlers", "negozio"]]
 CurrentBattleAction = battleAction
 
 def DrawBattleSelection(screen):
-    Gino1.ViewInformation(assets.screen)
     Width, Height = assets.ScreenDimension
     scale = Height / 3
     scaleX = scale * 2
@@ -342,7 +365,7 @@ def DrawBattleSelection(screen):
     screen.blit(surface, (Width - scaleX, Height - scale))
 
 def EndTurnChecks(screen):
-    global Gino2, Level, score
+    global Gino2, Gino1, Level, score
     if Gino2.HP < 1:
         Text = dialog.dialoge(Gino2.type + " non ha più energie")
         Text.update(screen)
@@ -354,8 +377,20 @@ def EndTurnChecks(screen):
     elif Gino1.HP < 1:
         Text = dialog.dialoge(Gino1.type + " non ha più energie")
         Text.update(screen)
-        print(score)
-        quit()
+        squadra.remove(Gino1)
+        del Gino1
+        if len(squadra) > 0:
+            while True:
+                ViewTeam(screen)
+                try:
+                    Gino1
+                    break
+                except:
+                    pass
+            return False
+        else:
+            print(score)
+            quit()
     return True
 
 def PlayerTurn(screen, playerMove):
@@ -398,6 +433,7 @@ def Turn(screen, playerMove):
 
 
 def ViewTeam(screen):
+    global Gino1
     rects = []
     for i in range(len(squadra)):
         rects.append(pygame.rect.Rect(0,0,225,225))
@@ -417,8 +453,8 @@ def ViewTeam(screen):
                     screen.blit(pygame.transform.scale(BattlersType[squadra[itemN].type]["sprite"], (225,225)), (x, y)) 
                     rects[itemN].x, rects[itemN].y = x,y 
                     itemN += 1
+        mouse_x, mouse_y = pygame.mouse.get_pos()
         for i, rect in enumerate(rects):
-            mouse_x, mouse_y = pygame.mouse.get_pos()
             if rect.collidepoint(mouse_x, mouse_y):
                 dimension = screen_height / 6
                 description_box = pygame.Rect(mouse_x+10, mouse_y+10, dimension*1.7, dimension)
@@ -440,4 +476,13 @@ def ViewTeam(screen):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                for i, rect in enumerate(rects):
+                    if rect.collidepoint(mouse_x, mouse_y):
+                        if event.button == 1:
+                            squadra[i].ViewInformation(screen)
+                        else:
+                            Gino1 = squadra[i]
+
             
