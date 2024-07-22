@@ -12,9 +12,12 @@ screen = pygame.display.set_mode((800,600), pygame.RESIZABLE)
 
 assets.screen = screen
 
+clock = pygame.time.Clock()
 Battle_text = dialog.dialoge("cosa devi fare?")
 
 while True:
+    clock.tick()
+    assets.delta_time = clock.get_time() / 1000.0
     assets.ScreenDimension = screen.get_size()
     Width, Height = assets.ScreenDimension
     Cycles.pygameEventCicles()

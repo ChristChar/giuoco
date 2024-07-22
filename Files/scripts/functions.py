@@ -1,4 +1,5 @@
 import pygame
+import random
 
 def scrivirobebelle():
     input_text = ""
