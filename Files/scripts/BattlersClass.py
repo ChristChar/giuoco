@@ -139,6 +139,8 @@ class Battlers:
                     for i in MOVES[move]["ScriptDmage"]:
                         i(assets.screen, Damage, self)
         else:
+            Text = dialog.dialoge(self.type + " usa " + move + "!!")
+            Text.update(assets.screen)
             Text = dialog.dialoge("Ma fallisce")
             Text.update(assets.screen)
 

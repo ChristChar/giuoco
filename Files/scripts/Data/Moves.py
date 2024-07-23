@@ -159,6 +159,87 @@ def State(screen, Move, Attacker, Defender, IsEnemy):
         Attacker.Draw(screen, False)
     Text.draw(screen)
     pygame.display.update()
+
+
+def LanciaPalle(screen, Move, Attacker, Defender, IsEnemy):
+    Width, Height = screen.get_size()
+    if "sound" in MOVES[Move]:
+        roar = pygame.mixer.Sound(f"Files/sound/{MOVES[Move]['sound']}")
+        roar.play()
+    Text = dialog.dialoge(Attacker.type + " usa " + Move + "!!")
+    AttackerImage = BattlersType[Attacker.type]["sprite"]
+    DefenderImage = BattlersType[Defender.type]["sprite"]
+
+    if IsEnemy:
+        scale = round(Height / 3)
+        Ax, Ay = ((Width / 4) * 3) - scale / 2, (Height / 4) - scale / 2
+        Bx, By = Ax + scale / 2, Ay + scale / 2
+        scale = round(Height / 1.6)
+        Dx, Dy = (Width / 4) - scale / 2, (Height - Height / 3) - scale / 1.7
+        Arrx, Arry = Dx + scale / 2, Dy + scale / 2
+    else:
+        scale = round(Height / 1.6)
+        Ax, Ay = (Width / 4) - scale / 2, (Height - Height / 3) - scale / 1.7
+        Bx, By = Ax + scale / 2, Ay + scale / 2
+        scale = round(Height / 3)
+        Dx, Dy = ((Width / 4) * 3) - scale / 2, (Height / 4) - scale / 2
+        Arrx, Arry = Dx + scale / 2, Dy + scale / 2
+
+    speed = 18  # Velocità di movimento
+    
+    BALL_COLOR = MOVES[Move]["color"]
+    DIMENSION = MOVES[Move]["dimension"]
+    while True:
+        screen.fill((0, 0, 0))  # Riempie lo schermo con il colore nero
+        back = pygame.transform.scale(assets.bacck, (Width, Height))
+        screen.blit(back, (0, 0))
+
+        if IsEnemy:
+            scale = round(Height / 3)
+            sprite = pygame.transform.scale(AttackerImage, (scale, scale))
+            screen.blit(sprite, (Ax, Ay))
+            scale = round(Height / 1.6)
+            sprite = pygame.transform.flip(pygame.transform.scale(DefenderImage, (scale, scale)), True, False)
+            screen.blit(sprite, (Dx, Dy))
+        else:
+            scale = round(Height / 1.6)
+            sprite = pygame.transform.flip(pygame.transform.scale(AttackerImage, (scale, scale)), True, False)
+            screen.blit(sprite, (Ax, Ay))
+            scale = round(Height / 3)
+            sprite = pygame.transform.scale(DefenderImage, (scale, scale))
+            screen.blit(sprite, (Dx, Dy))
+        
+        pygame.draw.circle(screen, BALL_COLOR, (Bx, By), round(Height / DIMENSION))
+
+        Text.draw(screen)
+
+        dx = Arrx - Bx
+        dy = Arry - By
+        distance = math.sqrt(dx ** 2 + dy ** 2)
+
+        if distance < speed:  # Controlla se la distanza rimanente è minore della velocità
+            break
+
+        Bx += dx / distance * speed
+        By += dy / distance * speed
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+    back = pygame.transform.scale(assets.bacck, (Width, Height))
+    screen.blit(back, (0, 0))
+    if IsEnemy:
+        Defender.Draw(screen, False)
+        Attacker.Draw(screen, True)
+    else:
+        Defender.Draw(screen, True)
+        Attacker.Draw(screen, False)
+    Text.draw(screen)
+    pygame.display.update()
         
         
 
@@ -167,6 +248,13 @@ MOVES = {
         "type": "normale",
         "MoveType": "Fisica",
         "BasePower": 40,
+        "precisione": 100,
+        "target": "enemy"
+    },
+    "Terremoto": {
+        "type": "terra",
+        "MoveType": "Fisica",
+        "BasePower": 100,
         "precisione": 100,
         "target": "enemy"
     },
@@ -182,14 +270,20 @@ MOVES = {
         "MoveType": "Magic",
         "BasePower": 40,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (255,200,0),
+        "dimension":20
     },
     "Sassata": {
         "type": "sasso",
         "MoveType": "Fisica",
         "BasePower": 55,
         "precisione": 95,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (255,200,0),
+        "dimension":10
     },
     "Trhyhard": {
         "type": "gamer",
@@ -204,14 +298,20 @@ MOVES = {
         "MoveType": "Magic",
         "BasePower": 55,
         "precisione": 95,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (200,200,200),
+        "dimension":15
     },
     "Tuonoshock": {
         "type": "elettro",
         "MoveType": "Magic",
         "BasePower": 40,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (255,255,0),
+        "dimension":20
     },
     "Morso": {
         "type": "normale",
@@ -225,7 +325,10 @@ MOVES = {
         "MoveType": "Magic",
         "BasePower": 90,
         "precisione": 95,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (255,200,0),
+        "dimension":15
     },
     "Brilla": {
         "type": "luce",
@@ -241,7 +344,10 @@ MOVES = {
         "BasePower": 200,
         "precisione": 100,
         "Scripts": [AfterSkipTurn],
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (255,255,255),
+        "dimension":15
     },
     "sanguisuga": {
         "type": "insetto",
@@ -289,6 +395,13 @@ MOVES = {
         "precisione": 100,
         "target": "enemy"
     },
+    "Radice schiaffo": {
+        "type": "erba",
+        "MoveType": "Fisica",
+        "BasePower": 110,
+        "precisione": 100,
+        "target": "enemy"
+    },
     "taskkill": {
         "type": "informatico",
         "MoveType": "Magic",
@@ -301,14 +414,20 @@ MOVES = {
         "MoveType": "Magic",
         "BasePower": 40,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (9,200,255),
+        "dimension":20
     },
     "Geloraggio": {
         "type": "ghiaccio",
         "MoveType": "Magic",
         "BasePower": 80,
         "precisione": 95,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (100,255,255),
+        "dimension":15
     },
     "rickroll": {
         "type": "meme",
@@ -322,7 +441,10 @@ MOVES = {
         "MoveType": "Fisica",
         "BasePower": 120,
         "precisione": 50,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (0,0,0),
+        "dimension":30
     },
     "ballo": {
         "type": "meme",

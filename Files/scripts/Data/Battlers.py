@@ -153,7 +153,14 @@ BattlersType = {"Gino":{"BaseStat":{"HP":104,"ATT":72,"MAGIC":37,"DIF":97,"FUN":
                           "baseEXP": 127, 
                           "growth_rate": 'Fast', 
                           "EVS": {"HP":1, "VEL":1},
-                          "Dex":"La leggenda dice che questo PC da gaming ha così tante luci da gaming che è in grado di accecare chiunque lo guardi"}}
+                          "Dex":"La leggenda dice che questo PC da gaming ha così tante luci da gaming che è in grado di accecare chiunque lo guardi"},
+                "Albero":{"BaseStat":{"HP":164,"ATT":78,"MAGIC":11,"DIF":168,"FUN":56,"VEL":8}, #485stat
+                          "types":["erba","terra"], 
+                          "moves":{"start":["Terremoto","Radice schiaffo"]},
+                          "baseEXP": 128, 
+                          "growth_rate": 'Fast', 
+                          "EVS": {"HP":1, "DIF":1},
+                          "Dex":"Per fare il tavolo ci vuole il legno, per fare il legno ci vuole l'albero, per fare l'albero ci vuole un seme, per fare il seme ci vuole un frutto, per fare un frutto ci vuole un fiore, per fare il fiore ci vuole una pianta, per fare la piante..."}}
 
 for i in BattlersType:
     BattlersType[i]["sprite"] = pygame.image.load("Files/image/Battlers/"+i+".png")
