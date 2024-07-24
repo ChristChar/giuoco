@@ -160,7 +160,14 @@ BattlersType = {"Gino":{"BaseStat":{"HP":104,"ATT":72,"MAGIC":37,"DIF":97,"FUN":
                           "baseEXP": 128, 
                           "growth_rate": 'Fast', 
                           "EVS": {"HP":1, "DIF":1},
-                          "Dex":"Per fare il tavolo ci vuole il legno, per fare il legno ci vuole l'albero, per fare l'albero ci vuole un seme, per fare il seme ci vuole un frutto, per fare un frutto ci vuole un fiore, per fare il fiore ci vuole una pianta, per fare la piante..."}}
+                          "Dex":"Per fare il tavolo ci vuole il legno, per fare il legno ci vuole l'albero, per fare l'albero ci vuole un seme, per fare il seme ci vuole un frutto, per fare un frutto ci vuole un fiore, per fare il fiore ci vuole una pianta, per fare la piante..."},
+                "Forchetta":{"BaseStat":{"HP":67,"ATT":73,"MAGIC":45,"DIF":64,"FUN":24,"VEL":12}, #285stat
+                          "types":["acciaio"], 
+                          "moves":{"start":["Ferrartigli","Ferroscudo"]},
+                          "baseEXP": 56, 
+                          "growth_rate": 'Fast', 
+                          "EVS": {"ATT":1},
+                          "Dex":"Forchetta"}}
 
 for i in BattlersType:
     BattlersType[i]["sprite"] = pygame.image.load("Files/image/Battlers/"+i+".png")

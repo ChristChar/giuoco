@@ -318,7 +318,7 @@ class Battlers:
         for stat, n in BattlersType[enemy.type]["EVS"].items():
             self.EVS[stat] += n
         EXPtoLevelUp =  self.ExpToLevelUp()
-        if self.EXP >= EXPtoLevelUp:
+        while self.EXP >= EXPtoLevelUp:
             assets.score += 1
             self.EXP -= EXPtoLevelUp
             self.level += 1

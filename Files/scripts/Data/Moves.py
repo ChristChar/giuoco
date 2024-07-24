@@ -21,8 +21,12 @@ def AfterSkipTurn(screen, self):
 #animazioni
 def Defoult(screen, Move, Attacker, Defender, IsEnemy):
     Width, Height = screen.get_size()
-    slap = pygame.mixer.Sound("Files/sound/slap.mp3")
-    slap.play()
+    if "sound" in MOVES[Move]:
+        roar = pygame.mixer.Sound(f"Files/sound/{MOVES[Move]["sound"]}")
+        roar.play()
+    else:
+        slap = pygame.mixer.Sound("Files/sound/slap.mp3")
+        slap.play()
     Text = dialog.dialoge(Attacker.type + " usa " + Move + "!!")
     AttackerImage = BattlersType[Attacker.type]["sprite"]
     DefenderImage = BattlersType[Defender.type]["sprite"]
@@ -38,7 +42,7 @@ def Defoult(screen, Move, Attacker, Defender, IsEnemy):
         scale = round(Height / 3)
         Dx, Dy = ((Width / 4) * 3) - scale / 2, (Height / 4) - scale / 2
 
-    speed = 25  # Velocità di movimento
+    speed = 1250 * assets.delta_time  # Velocità di movimento
 
     while True:
         screen.fill((0, 0, 0))  # Riempie lo schermo con il colore nero
@@ -185,7 +189,7 @@ def LanciaPalle(screen, Move, Attacker, Defender, IsEnemy):
         Dx, Dy = ((Width / 4) * 3) - scale / 2, (Height / 4) - scale / 2
         Arrx, Arry = Dx + scale / 2, Dy + scale / 2
 
-    speed = 18  # Velocità di movimento
+    speed = 1000 * assets.delta_time  # Velocità di movimento
     
     BALL_COLOR = MOVES[Move]["color"]
     DIMENSION = MOVES[Move]["dimension"]
@@ -241,6 +245,75 @@ def LanciaPalle(screen, Move, Attacker, Defender, IsEnemy):
     Text.draw(screen)
     pygame.display.update()
         
+
+def Brilla(screen, Move, Attacker, Defender, IsEnemy):
+    Width, Height = screen.get_size()
+    if "sound" in MOVES[Move]:
+        roar = pygame.mixer.Sound(f"Files/sound/{MOVES[Move]['sound']}")
+        roar.play()
+    Text = dialog.dialoge(Attacker.type + " usa " + Move + "!!")
+    AttackerImage = BattlersType[Attacker.type]["sprite"]
+    DefenderImage = BattlersType[Defender.type]["sprite"]
+
+    if IsEnemy:
+        scale = round(Height / 3)
+        Ax, Ay = ((Width / 4) * 3) - scale / 2, (Height / 4) - scale / 2
+        Bx, By = Ax + scale / 2, Ay + scale / 2
+        scale = round(Height / 1.6)
+        Dx, Dy = (Width / 4) - scale / 2, (Height - Height / 3) - scale / 1.7
+    else:
+        scale = round(Height / 1.6)
+        Ax, Ay = (Width / 4) - scale / 2, (Height - Height / 3) - scale / 1.7
+        Bx, By = Ax + scale / 2, Ay + scale / 2
+        scale = round(Height / 3)
+        Dx, Dy = ((Width / 4) * 3) - scale / 2, (Height / 4) - scale / 2
+
+    speed = 1200 * assets.delta_time  # Velocità di movimento
+    dimension = Height/10
+    BALL_COLOR = MOVES[Move]["color"]
+    while dimension < Height:
+        screen.fill((0, 0, 0))  # Riempie lo schermo con il colore nero
+        back = pygame.transform.scale(assets.bacck, (Width, Height))
+        screen.blit(back, (0, 0))
+
+        if IsEnemy:
+            scale = round(Height / 3)
+            sprite = pygame.transform.scale(AttackerImage, (scale, scale))
+            screen.blit(sprite, (Ax, Ay))
+            scale = round(Height / 1.6)
+            sprite = pygame.transform.flip(pygame.transform.scale(DefenderImage, (scale, scale)), True, False)
+            screen.blit(sprite, (Dx, Dy))
+        else:
+            scale = round(Height / 1.6)
+            sprite = pygame.transform.flip(pygame.transform.scale(AttackerImage, (scale, scale)), True, False)
+            screen.blit(sprite, (Ax, Ay))
+            scale = round(Height / 3)
+            sprite = pygame.transform.scale(DefenderImage, (scale, scale))
+            screen.blit(sprite, (Dx, Dy))
+        
+        circle_surface = pygame.Surface((Height*2, Height*2), pygame.SRCALPHA)
+        pygame.draw.circle(circle_surface, BALL_COLOR, (Height, Height), round(dimension))
+        screen.blit(circle_surface, (Bx-Height,By-Height))
+        dimension += speed
+        Text.draw(screen)
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+    back = pygame.transform.scale(assets.bacck, (Width, Height))
+    screen.blit(back, (0, 0))
+    if IsEnemy:
+        Defender.Draw(screen, False)
+        Attacker.Draw(screen, True)
+    else:
+        Defender.Draw(screen, True)
+        Attacker.Draw(screen, False)
+    Text.draw(screen)
+    pygame.display.update()
         
 
 MOVES = {
@@ -251,19 +324,38 @@ MOVES = {
         "precisione": 100,
         "target": "enemy"
     },
+    "Ferrartigli": {
+        "type": "acciaio",
+        "MoveType": "Fisica",
+        "BasePower": 55,
+        "precisione": 95,
+        "target": "enemy"
+    },
+    "Ferroscudo": {
+        "type": "acciaio",
+        "MoveType": "State",
+        "precisione": 100,
+        "Stat": [{"stats": ["DIF"], "Power": 0.5, "Target":"self"}],
+        "target": "self",
+        "animation":State
+    },
     "Terremoto": {
         "type": "terra",
         "MoveType": "Fisica",
         "BasePower": 100,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": Brilla,
+        "color": (150,50,0,85),
     },
     "smog": {
         "type": "veleno",
         "MoveType": "Fisica",
         "BasePower": 35,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": Brilla,
+        "color": (150,0,150,85),
     },
     "Braciere": {
         "type": "fuoco",
@@ -336,7 +428,9 @@ MOVES = {
         "BasePower": 80,
         "precisione": 85,
         "Stat": [{"stats": ["PRECISIONE"], "Power": -0.3, "Target":"enemy", "probabilità":65}],
-        "target": "enemy"
+        "target": "enemy",
+        "animation": Brilla,
+        "color": (255,255,255,85),
     },
     "IPER RAGGIO": {
         "type": "magia",
@@ -347,7 +441,8 @@ MOVES = {
         "target": "enemy",
         "animation": LanciaPalle,
         "color": (255,255,255),
-        "dimension":15
+        "dimension":15,
+        "sound":"drip.mp3"
     },
     "sanguisuga": {
         "type": "insetto",
@@ -379,7 +474,9 @@ MOVES = {
         "type": "plastica",
         "MoveType": "Fisica",
         "BasePower": 65,
-        "target": "enemy"
+        "target": "enemy",
+        "animation": Brilla,
+        "color": (100,100,100,85),
     },
     "Dragoartigli": {
         "type": "drago",
@@ -434,7 +531,8 @@ MOVES = {
         "MoveType": "Fisica",
         "BasePower": 60,
         "precisione": 95,
-        "target": "enemy"
+        "target": "enemy",
+        "sound":"rick.mp3"
     },
     "sparo": {
         "type": "pistola",
@@ -444,7 +542,8 @@ MOVES = {
         "target": "enemy",
         "animation": LanciaPalle,
         "color": (0,0,0),
-        "dimension":30
+        "dimension":30,
+        "sound":"gun.mp3"
     },
     "ballo": {
         "type": "meme",
@@ -466,7 +565,7 @@ MOVES = {
     "Machine Learning": {
         "type": "AI",
         "MoveType": "State",
-        "Stat": [{"stats": ["ATT","MAGIC","DIF","FUN","VEL"], "Power": 0.7, "Target":"self"}],
+        "Stat": [{"stats": ["ATT","MAGIC","DIF","FUN","VEL"], "Power": 0.6, "Target":"self"}],
         "precisione": 100,
         "Scripts": [AfterSkipTurn],
         "target": "self",
@@ -484,7 +583,7 @@ MOVES = {
     "Fissare": {
         "type": "normale",
         "MoveType": "State",
-        "Stat": [{"stats": ["PRECISIONE"], "Power": 2, "Target":"self"}],
+        "Stat": [{"stats": ["PRECISIONE"], "Power": 1, "Target":"self"},{"stats": ["DIF"], "Power": -0.1, "Target":"enemy"}],
         "precisione": 100,
         "target": "self",
         "animation": State,

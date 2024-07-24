@@ -7,7 +7,6 @@ pygame.init()
 
 screen = pygame.display.set_mode((800,600), pygame.RESIZABLE)
 
-
 assets.screen = screen
 
 clock = pygame.time.Clock()
