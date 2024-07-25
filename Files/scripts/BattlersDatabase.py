@@ -18,7 +18,7 @@ Gino1 = squadra[0]
 def Buy():
     global squadra
     if len(squadra) < 6:
-        assets.score -= 3
+        assets.score -= 2
         levels = []
         for battlers in squadra:
             levels.append(battlers.level)
@@ -62,15 +62,16 @@ def DrawBattleSelection(screen):
 
 def EndTurnChecks(screen):
     global Gino2, Gino1, Level
+    Return = True
     if Gino2.HP < 1:
         Text = dialog.dialoge(Gino2.type + " non ha più energie")
         Text.update(screen)
         Gino1.ExpDropped(Gino2, screen)
         Gino2 = RandomizeEnemy()
-        Level += random.choice([0,0,0,1,1,2,-1])
+        Level += random.choice([0,0,0,0,0,1,1,1,2,-1,-1])
         assets.score += 1
-        return False
-    elif Gino1.HP < 1:
+        Return = False
+    if Gino1.HP < 1:
         Text = dialog.dialoge(Gino1.type + " non ha più energie")
         Text.update(screen)
         squadra.remove(Gino1)
@@ -83,16 +84,20 @@ def EndTurnChecks(screen):
                     break
                 except:
                     pass
-            return False
+            Return = False
         else:
             print(assets.score)
             quit()
-    return True
+    return Return
 
 def PlayerTurn(screen, playerMove):
     if Gino1.riposo:
         Gino1.riposo = False
         Text = dialog.dialoge(Gino1.type + " deve riposarsi")
+        Text.update(screen)
+    elif Gino1.flitch:
+        Gino1.flitch = False
+        Text = dialog.dialoge(Gino1.type + " Ha tentennato")
         Text.update(screen)
     else:
         Gino1.useMove(playerMove, Gino2)
@@ -102,6 +107,10 @@ def EnemyTurn(screen, a):
     if Gino2.riposo:
         Gino2.riposo = False
         Text = dialog.dialoge(Gino2.type + " deve riposarsi")
+        Text.update(screen)
+    elif Gino2.flitch:
+        Gino2.flitch = False
+        Text = dialog.dialoge(Gino2.type + " Ha tentennato")
         Text.update(screen)
     else:
         move = random.choice(Gino2.moves)
@@ -121,7 +130,9 @@ def Turn(screen, playerMove):
     TurnOrder[0](screen, playerMove)
     if EndTurnChecks(screen):
         TurnOrder[1](screen, playerMove)
-        EndTurnChecks(screen)
+    Gino2.StatusCheck()
+    Gino1.StatusCheck()
+    EndTurnChecks(screen)
 
 
 def ViewTeam(screen):

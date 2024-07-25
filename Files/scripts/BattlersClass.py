@@ -8,11 +8,13 @@ import Files.scripts.pygameEventCycles as Cycles
 from Files.scripts.Data.Moves import MOVES, Defoult
 from Files.scripts.Data.Battlers import BattlersType
 from Files.scripts.Data.types import types, TypesColor
+import Files.scripts.Data.status as status
 
 Stats = ["HP","ATT","MAGIC","DIF","FUN","VEL"]
 
 class Battlers:
     def __init__(self, type, level, isEnemy = False):
+        self.state = None
         self.type = type
         self.IV = {"HP":random.randint(0,62), "ATT":random.randint(0,62),"MAGIC":random.randint(0,62), 
                    "DIF":random.randint(0,62), "FUN":random.randint(0,62),"VEL":random.randint(0,62)}
@@ -25,9 +27,11 @@ class Battlers:
         self.maxHP = MAXHP
         self.EXP = 0
         self.riposo = False
+        self.flitch = False
         self.moves = BattlersType[self.type]["moves"]["start"]
         self.gender = random.choice(["♀","♂"])
         self.isEnemy = isEnemy
+        
         
         
     
@@ -46,6 +50,9 @@ class Battlers:
             Stat_Calculated[stat] = ThiseStat
         for stat, molt in NATURE[self.natura].items():
             Stat_Calculated[stat] *= molt
+        if self.state in status.LowerStat:
+            for Stat, Low in list(status.LowerStat[self.state].items()):
+                Stat_Calculated[Stat] *= Low
         return Stat_Calculated
 
 
@@ -84,6 +91,15 @@ class Battlers:
         return damage
     
     def useMove(self, move, enemy):
+        if self.state in status.SkipTurn:
+            if random.random() < status.CureChance[self.state] / 100:
+                Text = dialog.dialoge(self.type+" è guarito dalla "+self.state+"!!")
+                Text.update(assets.screen)
+                self.state = None
+            elif random.random() < status.SkipTurn[self.state]["chance"] / 100:
+                Text = dialog.dialoge(self.type+status.SkipTurn[self.state]["Text"])
+                Text.update(assets.screen)
+                return
         if "precisione" in MOVES[move]:
             if MOVES[move]["target"] == "enemy":
                 chance = MOVES[move]["precisione"] / 100 * self.modificator["PRECISIONE"] / enemy.modificator["ELUSIONE"]
@@ -131,7 +147,7 @@ class Battlers:
                     Text.update(assets.screen)
             if "Scripts" in MOVES[move]:
                 for script in MOVES[move]["Scripts"]:
-                    script(assets.screen, self)
+                    script(assets.screen, self, enemy, move)
             if  MOVES[move]["MoveType"] != "State":
                 Damage = self.Damage_Calculate(move, enemy)
                 enemy.HP -= Damage
@@ -152,6 +168,7 @@ class Battlers:
         StateBar.fill((200,200,200))
         font = pygame.font.SysFont(None, round(scale/3))
         Name = font.render(self.type+" L"+str(self.level), True, (0,0,0))
+        NameLenght, NameHeight = Name.get_size()
         StateBar.blit(Name, (5,5))
         LifeBarW = scaleX / 1.5
         LifeBarH = scale / 5
@@ -164,6 +181,20 @@ class Battlers:
             lifeColor = (0,255,0)
         HpBarW = (LifeBarW / self.maxHP) * self.HP
         pygame.draw.rect(StateBar, lifeColor, (scaleX/2-LifeBarW/2, scale/2-LifeBarH/2, HpBarW, LifeBarH))
+        if self.state is not None:
+            Y = NameHeight
+            X = Y*1.2
+            Status = pygame.surface.Surface((X,Y))
+            Status.fill(status.Color[self.state])
+            Font = pygame.font.SysFont(None, round(Y*0.9))
+            if F.is_color_light(status.Color[self.state]):
+                color = (0,0,0)
+            else:
+                color = (255,255,255)
+            Text = Font.render(self.state, True, color)
+            x, y = Text.get_size()
+            Status.blit(Text, (X/2-x/2,Y/2-y/2))
+            StateBar.blit(Status, (20+NameLenght,5))
         if not isEnemy:
             EXPbarW = scaleX * 0.8
             EXPbarH = scale/12
@@ -210,6 +241,20 @@ class Battlers:
             Name = font.render(f"L {self.level}", True, (0,0,0))
             WW, HH = Name.get_size()
             pokemonSurface.blit(Name, (10, (H/2 + W*0.4 + H/5) - HH/2))
+            if self.state is not None:
+                Y = HH / 1.5
+                X = Y*1.2
+                Status = pygame.surface.Surface((X,Y))
+                Status.fill(status.Color[self.state])
+                Font = pygame.font.SysFont(None, round(Y*0.8))
+                if F.is_color_light(status.Color[self.state]):
+                    color = (0,0,0)
+                else:
+                    color = (255,255,255)
+                Text = Font.render(self.state, True, color)
+                x, y = Text.get_size()
+                Status.blit(Text, (X/2-x/2,Y/2-y/2))
+                pokemonSurface.blit(Status, (40+WW,(H/2 + W*0.4 + H/5) - Y/2))
             screen.blit(pokemonSurface, (WIDTH/5-W/2, HEIGHT/2-H/2))
             information = pygame.surface.Surface((WIDTH/4 * 2.5, HEIGHT*0.85))
             W, H = information.get_size()
@@ -357,3 +402,15 @@ class Battlers:
             else:
                 exp = level ** 3 * (level // 2 + 32) // 50        
         return exp
+    
+    def StatusCheck(self):
+        if self.state in status.Damage:
+            if random.random() < status.CureChance[self.state] / 100:
+                Text = dialog.dialoge(self.type+" è guarito dalla "+self.state+"!!")
+                Text.update(assets.screen)
+                self.state = None
+            else:
+                Text = dialog.dialoge(self.type+status.Damage[self.state]["Text"])
+                Text.update(assets.screen)
+                Percet = self.maxHP / 100 * status.Damage[self.state]["%"]
+                self.HP -= Percet

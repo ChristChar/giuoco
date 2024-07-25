@@ -51,7 +51,7 @@ BattlersType = {"Gino":{"BaseStat":{"HP":104,"ATT":72,"MAGIC":37,"DIF":97,"FUN":
                           "Dex":"Lui sa nuotare, gli altri affogano malamente"}, 
                 "Yellow Pikmin":{"BaseStat":{"HP":67,"ATT":31,"MAGIC":38,"DIF":34,"FUN":72,"VEL":89}, #331stat
                           "types":["erba", "elettro"], 
-                          "moves":{"start":["Erba schiaffo","Tuonoshock","Fissare"]},
+                          "moves":{"start":["Erba schiaffo","Tuonoshock","Tuononda"]},
                           "baseEXP": 97, 
                           "growth_rate": "Fast", 
                           "EVS": {"VEL":1},
@@ -167,7 +167,14 @@ BattlersType = {"Gino":{"BaseStat":{"HP":104,"ATT":72,"MAGIC":37,"DIF":97,"FUN":
                           "baseEXP": 56, 
                           "growth_rate": 'Fast', 
                           "EVS": {"ATT":1},
-                          "Dex":"Forchetta"}}
+                          "Dex":"Forchetta"},
+                "Creeper":{"BaseStat":{"HP":50,"ATT":255,"MAGIC":10,"DIF":10,"FUN":10,"VEL":255}, #590stat
+                          "types":["normale"], 
+                          "moves":{"start":["ESPLOSIONE"]},
+                          "baseEXP": 590, 
+                          "growth_rate": 'Fast', 
+                          "EVS": {"ATT":1,"VEL":1},
+                          "Dex":"Esplode prima che te lo aspetti"}}
 
 for i in BattlersType:
     BattlersType[i]["sprite"] = pygame.image.load("Files/image/Battlers/"+i+".png")

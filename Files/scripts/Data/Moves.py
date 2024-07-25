@@ -1,5 +1,6 @@
 import math
 import pygame
+import random
 import Files.scripts.assets as assets
 import Files.scripts.dialogue as dialog
 from Files.scripts.Data.Battlers import BattlersType
@@ -14,9 +15,43 @@ def AssorbiVita(screen, damage, self):
     Text = dialog.dialoge(f"{self.type} si cura!")
     Text.update(screen)
 
-def AfterSkipTurn(screen, self):
+def AfterSkipTurn(screen, self, enemy, move):
     self.riposo = True
 
+def AfterDie(screen, self, enemy, move):
+    self.HP = 0
+
+def Flitch(screen, self, enemy, move):
+    if random.random() < MOVES[move]["FlitchChance"] / 100:
+        enemy.flitch = True
+
+def PAR(screen, self, enemy, move):
+    if random.random() < MOVES[move]["PARChance"] / 100:
+        if enemy.state == None:
+            Text = dialog.dialoge(f"{enemy.type} è paralizzato")
+            Text.update(screen)
+            enemy.state = "PAR"
+
+def BRN(screen, self, enemy, move):
+    if random.random() < MOVES[move]["BRNChance"] / 100:
+        if enemy.state == None:
+            Text = dialog.dialoge(f"{enemy.type} è scottato")
+            Text.update(screen)
+            enemy.state = "BRN"
+
+def SLE(screen, self, enemy, move):
+    if random.random() < MOVES[move]["SLEChance"] / 100:
+        if enemy.state == None:
+            Text = dialog.dialoge(f"{enemy.type} è addormentato")
+            Text.update(screen)
+            enemy.state = "SLE"
+
+def POI(screen, self, enemy, move):
+    if random.random() < MOVES[move]["POIChance"] / 100:
+        if enemy.state == None:
+            Text = dialog.dialoge(f"{enemy.type} è avvelenato")
+            Text.update(screen)
+            enemy.state = "POI"
 
 #animazioni
 def Defoult(screen, Move, Attacker, Defender, IsEnemy):
@@ -324,6 +359,16 @@ MOVES = {
         "precisione": 100,
         "target": "enemy"
     },
+    "ESPLOSIONE": {
+        "type": "normale",
+        "MoveType": "Fisica",
+        "BasePower": 300,
+        "precisione": 100,
+        "target": "enemy",
+        "animation": Brilla,
+        "color": (255,255,255,85),
+        "Scripts": [AfterDie]
+        },
     "Ferrartigli": {
         "type": "acciaio",
         "MoveType": "Fisica",
@@ -356,6 +401,8 @@ MOVES = {
         "target": "enemy",
         "animation": Brilla,
         "color": (150,0,150,85),
+        "Scripts":[POI],
+        "POIChance":10
     },
     "Braciere": {
         "type": "fuoco",
@@ -365,7 +412,9 @@ MOVES = {
         "target": "enemy",
         "animation": LanciaPalle,
         "color": (255,200,0),
-        "dimension":20
+        "dimension":20,
+        "Scripts":[BRN],
+        "BRNChance": 5
     },
     "Sassata": {
         "type": "sasso",
@@ -403,14 +452,27 @@ MOVES = {
         "target": "enemy",
         "animation": LanciaPalle,
         "color": (255,255,0),
-        "dimension":20
+        "dimension":20,
+        "Scripts":[PAR],
+        "PARChance":10
+    },
+    "Tuononda":{
+        "type": "elettro",
+        "MoveType": "State",
+        "precisione": 100,
+        "target": "enemy",
+        "animation":State,
+        "Scripts":[PAR],
+        "PARChance":100
     },
     "Morso": {
         "type": "normale",
         "MoveType": "Fisica",
         "BasePower": 60,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "FlitchChance":20,
+        "Scripts": [Flitch]
     },
     "Lanciafiamme": {
         "type": "fuoco",
@@ -420,7 +482,9 @@ MOVES = {
         "target": "enemy",
         "animation": LanciaPalle,
         "color": (255,200,0),
-        "dimension":15
+        "dimension":15,
+        "Scripts":[BRN],
+        "BRNChance":12
     },
     "Brilla": {
         "type": "luce",
@@ -431,6 +495,8 @@ MOVES = {
         "target": "enemy",
         "animation": Brilla,
         "color": (255,255,255,85),
+        "FlitchChance":30,
+        "Scripts": [Flitch]
     },
     "IPER RAGGIO": {
         "type": "magia",
@@ -477,13 +543,19 @@ MOVES = {
         "target": "enemy",
         "animation": Brilla,
         "color": (100,100,100,85),
+        "FlitchChance":5,
+        "Scripts": [Flitch],
+        "Scripts":[POI],
+        "POIChance":5
     },
     "Dragoartigli": {
         "type": "drago",
         "MoveType": "Fisica",
         "BasePower": 80,
         "precisione": 90,
-        "target": "enemy"
+        "target": "enemy",
+        "FlitchChance":5,
+        "Scripts": [Flitch]
     },
     "Erba schiaffo": {
         "type": "erba",
@@ -504,7 +576,9 @@ MOVES = {
         "MoveType": "Magic",
         "BasePower": 80,
         "precisione": 90,
-        "target": "enemy"
+        "target": "enemy",
+        "FlitchChance":8,
+        "Scripts": [Flitch]
     },
     "Pistolacqua": {
         "type": "acqua",
@@ -532,7 +606,9 @@ MOVES = {
         "BasePower": 60,
         "precisione": 95,
         "target": "enemy",
-        "sound":"rick.mp3"
+        "sound":"rick.mp3",
+        "FlitchChance":8,
+        "Scripts": [Flitch]
     },
     "sparo": {
         "type": "pistola",
@@ -543,7 +619,9 @@ MOVES = {
         "animation": LanciaPalle,
         "color": (0,0,0),
         "dimension":30,
-        "sound":"gun.mp3"
+        "sound":"gun.mp3",
+        "FlitchChance":8,
+        "Scripts": [Flitch]
     },
     "ballo": {
         "type": "meme",
