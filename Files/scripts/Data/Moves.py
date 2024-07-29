@@ -109,7 +109,7 @@ def Defoult(screen, Move, Attacker, Defender, IsEnemy):
 
     while True:
         screen.fill((0, 0, 0))  # Riempie lo schermo con il colore nero
-        back = pygame.transform.scale(assets.bacck, (Width, Height))
+        back = pygame.transform.scale(assets.back, (Width, Height))
         screen.blit(back, (0, 0))
 
         if IsEnemy:
@@ -145,7 +145,7 @@ def Defoult(screen, Move, Attacker, Defender, IsEnemy):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-    back = pygame.transform.scale(assets.bacck, (Width, Height))
+    back = pygame.transform.scale(assets.back, (Width, Height))
     screen.blit(back, (0,0))
     if IsEnemy:
         Defender.Draw(screen, False)
@@ -184,7 +184,7 @@ def State(screen, Move, Attacker, Defender, IsEnemy):
     while lenght > (pygame.time.get_ticks() - SuonoPartito) / 1000:
         MaxMove = Width/25
         screen.fill((0, 0, 0))  # Riempie lo schermo con il colore nero
-        back = pygame.transform.scale(assets.bacck, (Width, Height))
+        back = pygame.transform.scale(assets.back, (Width, Height))
         screen.blit(back, (0, 0))
 
         if IsEnemy:
@@ -216,7 +216,7 @@ def State(screen, Move, Attacker, Defender, IsEnemy):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-    back = pygame.transform.scale(assets.bacck, (Width, Height))
+    back = pygame.transform.scale(assets.back, (Width, Height))
     screen.blit(back, (0,0))
     if IsEnemy:
         Defender.Draw(screen, False)
@@ -258,7 +258,7 @@ def LanciaPalle(screen, Move, Attacker, Defender, IsEnemy):
     DIMENSION = MOVES[Move]["dimension"]
     while True:
         screen.fill((0, 0, 0))  # Riempie lo schermo con il colore nero
-        back = pygame.transform.scale(assets.bacck, (Width, Height))
+        back = pygame.transform.scale(assets.back, (Width, Height))
         screen.blit(back, (0, 0))
 
         if IsEnemy:
@@ -297,7 +297,7 @@ def LanciaPalle(screen, Move, Attacker, Defender, IsEnemy):
                 pygame.quit()
                 exit()
 
-    back = pygame.transform.scale(assets.bacck, (Width, Height))
+    back = pygame.transform.scale(assets.back, (Width, Height))
     screen.blit(back, (0, 0))
     if IsEnemy:
         Defender.Draw(screen, False)
@@ -336,7 +336,7 @@ def Brilla(screen, Move, Attacker, Defender, IsEnemy):
     BALL_COLOR = MOVES[Move]["color"]
     while dimension < Height:
         screen.fill((0, 0, 0))  # Riempie lo schermo con il colore nero
-        back = pygame.transform.scale(assets.bacck, (Width, Height))
+        back = pygame.transform.scale(assets.back, (Width, Height))
         screen.blit(back, (0, 0))
 
         if IsEnemy:
@@ -367,7 +367,7 @@ def Brilla(screen, Move, Attacker, Defender, IsEnemy):
                 pygame.quit()
                 exit()
 
-    back = pygame.transform.scale(assets.bacck, (Width, Height))
+    back = pygame.transform.scale(assets.back, (Width, Height))
     screen.blit(back, (0, 0))
     if IsEnemy:
         Defender.Draw(screen, False)

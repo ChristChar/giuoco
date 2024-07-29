@@ -1,9 +1,12 @@
 import pygame
 import Files.scripts.assets as assets
+
+assets.SHOP = True
+
 import Files.scripts.draw as Draw
 import Files.scripts.pygameEventCycles as Cycles
 
-assets.SHOP = True
+
 
 with open("Files/stats.stt", 'r') as file:
     lines = [line.rstrip('\n') for line in file.readlines()]

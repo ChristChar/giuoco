@@ -11,7 +11,6 @@ for i, stat in enumerate(["HP","ATT","MAGIC","DIF","FUN","VEL"]):
 assets.Stats = StatsX
 
 import pygame
-
 import Files.scripts.draw as Draw
 import Files.scripts.pygameEventCycles as Cycles
 

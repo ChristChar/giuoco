@@ -17,7 +17,7 @@ def Menu(screen):
 
 def Game(screen):
     Width, Height = assets.ScreenDimension
-    back = pygame.transform.scale(assets.bacck, (Width, Height))
+    back = pygame.transform.scale(assets.back, (Width, Height))
     screen.blit(back, (0,0))
     data.Gino1.Draw(screen, False)
     data.Gino2.Draw(screen, True)

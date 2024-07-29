@@ -79,7 +79,15 @@ BattlersType = {"Gino":{"BaseStat":{"HP":104,"ATT":72,"MAGIC":37,"DIF":97,"FUN":
                           "growth_rate": "Fast", 
                           "EVS": {"VEL":2},
                           "Dex":"Fissalo molto attentamente negli occhi e dimmi come ti senti",
-                          "Spawn":80}, 
+                          }, 
+                "Rock Pikmin":{"BaseStat":{"HP":67,"ATT":56,"MAGIC":3,"DIF":54,"FUN":92,"VEL":59}, #331stat
+                          "types":["erba","sasso"], 
+                          "moves":{"start":["Erba schiaffo","Fissare","Sassata"]},
+                          "baseEXP": 97, 
+                          "growth_rate": "Fast", 
+                          "EVS": {"FUN":1,"ATT":1},
+                          "Dex":"Fissalo molto attentamente negli occhi e dimmi come ti senti"
+                          }, 
                 "Dinosauro":{"BaseStat":{"HP":123,"ATT":230,"MAGIC":1,"DIF":96,"FUN":37,"VEL":156}, #643stat
                           "types":["drago"], 
                           "moves":{"start":["Dragoartigli","rugito"]},

@@ -5,6 +5,7 @@ import Files.scripts.assets as assets
 import Files.scripts.buttons as buttons
 import Files.scripts.BattlersDatabase as data
 import Files.scripts.Data.Moves as MovesData
+import Files.scripts.Data.world as World
 
 def BaseCicle(event):
     if event.type == pygame.QUIT:
@@ -75,6 +76,7 @@ def Stats(event):
                         if assets.score >= assets.costo[assets.Stats[i]]:
                             assets.score -= assets.costo[assets.Stats[i]]
                             assets.Stats[i] += 0.1
+                            assets.Stats[i] = round(assets.Stats[i], 2)
                         else:
                             ctypes.windll.user32.MessageBoxW(0, 'SEI POVERO', 'Lolo', 0x10)
     elif event.type == pygame.KEYDOWN:
@@ -90,4 +92,5 @@ def pygameEventCicles():
         else:
             BaseCicle(event)
         cicles[assets.mode](event)
+        assets.back = World.image[assets.World]
                     

@@ -1,21 +1,29 @@
-from itertools import chain
 import pygame
 import random
 import ctypes
+from Files.scripts.Data import world
 import Files.scripts.functions as F
 import Files.scripts.assets as assets
 import Files.scripts.dialogue as dialog
-from Files.scripts.Data.Moves import Defoult
 from Files.scripts.BattlersClass import Battlers
 import Files.scripts.pygameEventCycles as Cycles
+import Files.scripts.BattlersSpawnChance as E
 from Files.scripts.Data.Battlers import BattlersType
+
+assets.World = random.choice(list(world.World.keys()))
 
 Stats = ["HP","ATT","MAGIC","DIF","FUN","VEL"]
 
-squadra = [Battlers(random.choice(assets.spawn_list), 5)]
+squadra = [Battlers(random.choice(E.SpawinList()), 5)]
 
 Gino1 = squadra[0]
 
+ToNextWorld = random.randint(5,15)
+
+def CuraSquadra():
+    for battler in squadra:
+        battler.HP = battler.maxHP
+        battler.state = None
 
 def Buy():
     global squadra
@@ -25,14 +33,14 @@ def Buy():
         for battlers in squadra:
             levels.append(battlers.level)
         LevelBase =  sum(levels) / len(levels)
-        squadra.append(Battlers(random.choice(assets.spawn_list), random.randint(round(LevelBase * 0.8), round(LevelBase * 1.2))))
+        squadra.append(Battlers(random.choice(E.SpawinList()), random.randint(round(LevelBase * 0.8), round(LevelBase * 1.2))))
     else:
         ctypes.windll.user32.MessageBoxW(0, 'Hai la squadra piena', 'Lolo', 0x10)
 
 Level = 2
 
 def RandomizeEnemy():
-    return Battlers(random.choice(assets.spawn_list), random.randint(round(Level * 0.7), round(Level * 1.3)), True)
+    return Battlers(random.choice(E.SpawinList()), random.randint(round(Level * 0.7), round(Level * 1.3)), True)
 
 Gino2 = RandomizeEnemy()
 
@@ -63,7 +71,7 @@ def DrawBattleSelection(screen):
     screen.blit(surface, (Width - scaleX, Height - scale))
 
 def EndTurnChecks(screen):
-    global Gino2, Gino1, Level,CurrentBattleAction
+    global Gino2, Gino1, Level,CurrentBattleAction, ToNextWorld
     Return = True
     Change = False
     if Gino1.HP < 1:
@@ -82,6 +90,10 @@ def EndTurnChecks(screen):
     if Gino2.HP < 1:
         Text = dialog.dialoge(Gino2.type + " non ha più energie")
         Text.update(screen)
+        if ToNextWorld <= 0:
+            ToNextWorld = random.randint(5,15)
+            assets.World = random.choice(list(world.World.keys()))
+            CuraSquadra()
         if Return:
             Gino1.ExpDropped(Gino2, screen)
         Gino2 = RandomizeEnemy()
@@ -89,6 +101,8 @@ def EndTurnChecks(screen):
         Level = max(1,Level)
         assets.score += 1
         Return = False
+        ToNextWorld -= 1
+        
     if Change:
          while True:
             ViewTeam(screen)
