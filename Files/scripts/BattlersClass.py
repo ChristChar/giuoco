@@ -22,10 +22,6 @@ class Battlers:
         self.modificator = {"ATT":0,"MAGIC":0,"DIF":0, "FUN":0,"VEL":0, "PRECISIONE": 1, "ELUSIONE":1}
         self.EVS = {"HP":0, "ATT":0,"MAGIC":0,"DIF":0, "FUN":0,"VEL":0}
         self.natura = random.choice(list(NATURE.keys()))
-        
-        MAXHP = self.Stat_Calculate()["HP"]
-        self.HP = MAXHP
-        self.maxHP = MAXHP
         self.EXP = 0
         self.riposo = False
         self.flitch = False
@@ -38,6 +34,9 @@ class Battlers:
                 self.moves[random.randint(0,3)] = NewMove
         self.gender = random.choice(["♀","♂"])
         self.isEnemy = isEnemy
+        MAXHP = self.Stat_Calculate()["HP"]
+        self.HP = MAXHP
+        self.maxHP = MAXHP
         
         
         
@@ -61,8 +60,9 @@ class Battlers:
                 Stat_Calculated[Stat] *= Low
         for stat, molt in assets.Stats.items():
             Stat_Calculated[stat] *= molt
-        for stat in ["ATT","MAGIC","DIF","FUN","VEL"]:
-            Stat_Calculated[stat] + self.modificator[stat]
+        if not self.isEnemy:
+            for stat in ["ATT","MAGIC","DIF","FUN","VEL"]:
+                Stat_Calculated[stat] + self.modificator[stat]
         return Stat_Calculated
 
 
