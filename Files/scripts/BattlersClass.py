@@ -3,7 +3,7 @@ import random
 import Files.scripts.functions as F
 import Files.scripts.assets as assets
 import Files.scripts.dialogue as dialog
-from Files.scripts.Data.nature import NATURE
+from Files.scripts.Data.nature import NATURE, NaturMove
 import Files.scripts.pygameEventCycles as Cycles
 from Files.scripts.Data.Moves import MOVES, Defoult
 from Files.scripts.Data.Battlers import BattlersType
@@ -22,19 +22,25 @@ class Battlers:
         self.modificator = {"ATT":0,"MAGIC":0,"DIF":0, "FUN":0,"VEL":0, "PRECISIONE": 1, "ELUSIONE":1}
         self.EVS = {"HP":0, "ATT":0,"MAGIC":0,"DIF":0, "FUN":0,"VEL":0}
         self.natura = random.choice(list(NATURE.keys()))
+        
         MAXHP = self.Stat_Calculate()["HP"]
         self.HP = MAXHP
         self.maxHP = MAXHP
         self.EXP = 0
         self.riposo = False
         self.flitch = False
-        self.moves = BattlersType[self.type]["moves"]["start"]
+        self.moves = BattlersType[self.type]["moves"]["start"].copy()
+        if self.natura in NaturMove:
+            NewMove = random.choice(NaturMove[self.natura])
+            if len(self.moves) < 4:
+                self.moves.append(NewMove)
+            elif random.random() < 0.6:
+                self.moves[random.randint(0,3)] = NewMove
         self.gender = random.choice(["♀","♂"])
         self.isEnemy = isEnemy
         
         
         
-    
     def Stat_Calculate(self):
         Stat_Calculated = {}
         for stat in Stats:
@@ -46,13 +52,17 @@ class Battlers:
             if stat == "HP":
                 ThiseStat = round((2 * ThiseBaseStat + self.IV[stat] + EVS)  / 100 * self.level) + self.level + 10
             else:
-                ThiseStat = max(round((2 * ThiseBaseStat + self.IV[stat] + EVS)  / 100 * self.level) + 5 + self.modificator[stat], 1)
+                ThiseStat = max(round((2 * ThiseBaseStat + self.IV[stat] + EVS)  / 100 * self.level) + 5 , 1)
             Stat_Calculated[stat] = ThiseStat
         for stat, molt in NATURE[self.natura].items():
             Stat_Calculated[stat] *= molt
         if self.state in status.LowerStat:
             for Stat, Low in list(status.LowerStat[self.state].items()):
                 Stat_Calculated[Stat] *= Low
+        for stat, molt in assets.Stats.items():
+            Stat_Calculated[stat] *= molt
+        for stat in ["ATT","MAGIC","DIF","FUN","VEL"]:
+            Stat_Calculated[stat] + self.modificator[stat]
         return Stat_Calculated
 
 
@@ -92,7 +102,11 @@ class Battlers:
     
     def useMove(self, move, enemy):
         if self.state in status.SkipTurn:
-            if random.random() < status.CureChance[self.state] / 100:
+            Resisten = 0
+            for type in BattlersType[self.type]["types"]:
+                if type in status.ResistanceTypes[self.state]:
+                    Resisten += status.ResistanceTypes[self.state][type]
+            if random.random() < (status.CureChance[self.state] + Resisten) / 100:
                 Text = dialog.dialoge(self.type+" è guarito dalla "+self.state+"!!")
                 Text.update(assets.screen)
                 self.state = None
@@ -162,10 +176,11 @@ class Battlers:
 
     def drawStateBar(self, screen, isEnemy):
         Width, Height = assets.ScreenDimension
-        scale = Height / 8
+        scale = Height / 7
         scaleX = scale * 3
-        StateBar = pygame.surface.Surface((scaleX, scale))
-        StateBar.fill((200,200,200))
+        StateBar = pygame.surface.Surface((scaleX, scale), pygame.SRCALPHA)
+        StateBar.fill((0,0,0,0))
+        F.draw_rounded_rect(StateBar, (200,200,200), (0,0,scaleX,scale),10)
         font = pygame.font.SysFont(None, round(scale/3))
         Name = font.render(self.type+" L"+str(self.level), True, (0,0,0))
         NameLenght, NameHeight = Name.get_size()
@@ -203,7 +218,7 @@ class Battlers:
             NewEXPbarW = EXPScale * self.EXP
             pygame.draw.rect(StateBar, (0,255,255), (scaleX/2 - EXPbarW/1.7, scale/4*3.5-EXPbarH/2, NewEXPbarW, EXPbarH))
         if isEnemy:
-            screen.blit(StateBar, ((Width / 4) - scaleX / 2, (Height / 4) - scale / 2))
+            screen.blit(StateBar, ((Width / 4) - scaleX / 1.5, (Height / 4) - scale / 1.5))
         else:
             screen.blit(StateBar, (((Width / 4) * 3) - scaleX / 2, (Height - Height / 3) - scale - Height/40))
 
@@ -220,10 +235,57 @@ class Battlers:
             screen.blit(sprite, ((Width / 4) - scale / 2, (Height - Height / 3) - scale / 1.7))
         self.drawStateBar(screen, isEnemy)
 
+    def MakeMoveInformaionSurface(self,screen, move):
+        WIDTH, HEIGHT = screen.get_size()
+        W, H = WIDTH / 3.5, HEIGHT * 0.2
+        COLOR_MOVE_TYPE = {"Fisica":(255,0,0),"Magic":(50,0,255),"State":(100,100,100)}
+        MoveSurface = pygame.Surface((W, H))
+        MoveData = MOVES[move]
+        MoveSurface.fill(TypesColor[MoveData["type"]])
+        TextColor = (0, 0, 0) if F.is_color_light(TypesColor[MoveData["type"]]) else (255, 255, 255)
+
+        # Calcola dimensioni del font per il titolo
+        title_font_size = round(W / 7)
+        TitleFont = pygame.font.SysFont(None, title_font_size)
+        Title = TitleFont.render(move, True, TextColor)
+        TW, TH = Title.get_size()
+        pygame.draw.rect(MoveSurface, COLOR_MOVE_TYPE[MoveData["MoveType"]], (TW+15, 5+TH*0.15, TH*0.7,TH*0.6))
+        TitleRect = Title.get_rect(topleft=(5, 5))
+
+        # Calcola dimensioni del font per le informazioni
+        info_font_size = round(W / 15)
+        InformationFont = pygame.font.SysFont(None, info_font_size)
+        
+        # Base Power
+        power = MoveData.get("BasePower", "--")
+        PowerText = f"Power: {power}"
+        Power = InformationFont.render(PowerText, True, TextColor)
+        PowerRect = Power.get_rect(topleft=(5, TitleRect.bottom + 5))
+
+        # Precisione
+        precisione = MoveData.get("precisione", "--")
+        PrecisionText = f"Precisione: {precisione}"
+        Precision = InformationFont.render(PrecisionText, True, TextColor)
+        PrecisionRect = Precision.get_rect(topleft=(5, PowerRect.bottom + 5))
+
+        #Dex
+        if "Dex" in MoveData:
+            Rect = pygame.rect.Rect(5,PrecisionRect.bottom + 10, W-10, H-10)
+            F.draw_text_within(MoveSurface, MoveData["Dex"], Rect, InformationFont, TextColor)
+
+        # Aggiunge gli elementi alla superficie
+        MoveSurface.blit(Title, TitleRect)
+        MoveSurface.blit(Power, PowerRect)
+        MoveSurface.blit(Precision, PrecisionRect)
+
+        return MoveSurface
+
+
     def ViewInformation(self, screen):
         Page = 0
         MAXPAGE = 2
         viewing = True
+        MoveSurface = None
         while viewing:
             screen.fill((0,10,50))
             WIDTH, HEIGHT = screen.get_size()
@@ -299,6 +361,7 @@ class Battlers:
                 ExpW = (x / self.ExpToLevelUp()) * self.EXP
                 pygame.draw.rect(information, (0,255,255), (10, 50*10.7, ExpW, y/1.7))
             elif Page == 1:
+                MoveRects = []
                 Text = Sfont.render("IV:", True, (0,0,0))
                 information.blit(Text, (10, 0))
                 MaxLenght = 0
@@ -315,7 +378,8 @@ class Battlers:
                     information.blit(Text, (MaxLenght + 80, 50*(i+1)))
                 for i, move in enumerate(self.moves):
                     if move != "-":
-                        pygame.draw.rect(information, TypesColor[MOVES[move]["type"]], (10, 50 * (i+8), 350, 45))
+                        Rect = pygame.rect.Rect((10, 50 * (i+8), 350, 45))
+                        pygame.draw.rect(information, TypesColor[MOVES[move]["type"]], Rect)
                         if F.is_color_light(TypesColor[MOVES[move]["type"]]):
                             color = (0,0,0)
                         else:
@@ -323,6 +387,12 @@ class Battlers:
                         Text = Sfont.render(move, True, color)
                         h = Text.get_height()
                         information.blit(Text, (20, 50 * (i+8) + 45/2-h/2))
+                        Rect.x += WIDTH-W
+                        Rect.y += HEIGHT/2-H/2
+                        MoveRects.append(Rect)
+                if MoveSurface is not None:
+                    MH = MoveSurface.get_height()
+                    screen.blit(MoveSurface, (0,HEIGHT-MH))
             elif Page == 2:
                 Rect = pygame.rect.Rect(W*0.05,H*0.05,W*0.9,H*0.9)
                 F.draw_text_within(information, BattlersType[self.type]["Dex"], Rect, Sfont, (0,0,0))
@@ -338,6 +408,18 @@ class Battlers:
                     elif event.key == pygame.K_LEFT:
                         if Page > 0:
                             Page -= 1
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if Page == 1:
+                        if event.button == 1:
+                            HaCliccato = True
+                            mouse_x, mouse_y = pygame.mouse.get_pos()
+                            for i, rect in enumerate(MoveRects):
+                                if rect.collidepoint(mouse_x, mouse_y):
+                                    HaCliccato = False
+                                    MoveSurface = self.MakeMoveInformaionSurface(screen, self.moves[i])
+                            if HaCliccato:
+                                MoveSurface = None
+                                    
             pygame.display.update()
 
 
@@ -358,7 +440,7 @@ class Battlers:
         return MoveOption
     
     def ExpDropped(self, enemy, screen, num_participants = 1):
-        exp = (BattlersType[enemy.type]["baseEXP"] * enemy.level) / (7 * num_participants)
+        exp = (BattlersType[enemy.type]["baseEXP"] * enemy.level) / (6 * num_participants)
         self.EXP += exp
         for stat, n in BattlersType[enemy.type]["EVS"].items():
             self.EVS[stat] += n
@@ -405,7 +487,11 @@ class Battlers:
     
     def StatusCheck(self):
         if self.state in status.Damage:
-            if random.random() < status.CureChance[self.state] / 100:
+            Resisten = 0
+            for type in BattlersType[self.type]["types"]:
+                if type in status.ResistanceTypes[self.state]:
+                    Resisten += status.ResistanceTypes[self.state][type]
+            if random.random() < (status.CureChance[self.state] + Resisten) / 100:
                 Text = dialog.dialoge(self.type+" è guarito dalla "+self.state+"!!")
                 Text.update(assets.screen)
                 self.state = None

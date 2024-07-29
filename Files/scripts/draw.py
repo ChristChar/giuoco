@@ -28,8 +28,32 @@ def Shop(screen):
     screen.fill((0,255,255))
     butt.updateButtons(screen)
 
+def StatShop(screen):
+    screen.fill((255,255,255))
+    W, H = screen.get_size()
+    Font = pygame.font.SysFont(None , round(H/10))
+    Score = Font.render(f"Punti: {assets.score}", True, (0,0,0))
+    screen.blit(Score, (10,10))
+    butt.updateButtons(screen)
 
-DrawForMode = {"menu":Menu, "game":Game, "shop":Shop}
+def Stat_Menu(screen):
+    screen.fill((255,255,255))
+    W, H = screen.get_size()
+    Font = pygame.font.SysFont(None , round(H/10))
+    Score = Font.render(f"Punti: {assets.score}", True, (0,0,0))
+    screen.blit(Score, (10,10))
+    Font = pygame.font.SysFont(None , round(H/12))
+    He = Font.get_height()
+    Arrow = pygame.transform.scale(assets.arrow, (He, He))
+    assets.ArrowRects = []
+    for i, stat in enumerate(data.Stats):
+        StatText = Font.render(f"{stat}: {assets.Stats[i]}", True, (0,0,0))
+        screen.blit(StatText, (W/2.5, H/2-He*(3-i)-(50-i*10)))
+        screen.blit(Arrow, (W/1.7, H/2-He*(3-i)-(50-i*10)))
+        assets.ArrowRects.append(pygame.rect.Rect((W/1.7, H/2-He*(3-i)-(50-i*10), He, He)))
+
+
+DrawForMode = {"menu":Menu, "game":Game, "shop":Shop,"statshop":StatShop, "Stats":Stat_Menu}
 
 def Draw(screen):
     DrawForMode[assets.mode](screen)

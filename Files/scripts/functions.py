@@ -31,3 +31,15 @@ def is_color_light(color):
     r, g, b = color
     brightness = (0.299 * r + 0.587 * g + 0.114 * b) / 255
     return brightness > 0.5
+
+def draw_rounded_rect(surface, color, rect, radius):
+    if isinstance(rect, pygame.rect.Rect):
+        x, y, width, height = rect.x, rect.y, rect.width, rect.height
+    else:
+        x, y, width, height = rect
+    pygame.draw.rect(surface, color, (x + radius, y, width - 2 * radius, height))
+    pygame.draw.rect(surface, color, (x, y + radius, width, height - 2 * radius))
+    pygame.draw.circle(surface, color, (x + radius, y + radius), radius)
+    pygame.draw.circle(surface, color, (x + width - radius, y + radius), radius)
+    pygame.draw.circle(surface, color, (x + radius, y + height - radius), radius)
+    pygame.draw.circle(surface, color, (x + width - radius, y + height - radius), radius)

@@ -55,7 +55,7 @@ class button:
             color = tuple(max(0, min(255, value - 50)) for value in self.color)
         else:
             color = self.color
-        pygame.draw.rect(screen, color, self.rect)
+        F.draw_rounded_rect(screen, color, self.rect, 10)
         TeW, TeH = 999, 999
         D = round(NewScalY)
         font = pygame.font.SysFont(None, D)
@@ -86,9 +86,9 @@ def quit():
 start = button("START", (255,0,0),"center", "game")
 Quit = button("QUIT", (0,200,255),"center", quit)
 BUY = button("Buy", (255, 255, 0), "center", data.Buy)
+stat = button("Stat Moltiplicator", (150, 150, 150), "center", "Stats")
 
-
-Buttons = {"menu":[start,Quit],"game":[], "shop":[BUY]}
+Buttons = {"menu":[start,Quit],"game":[], "shop":[BUY], "statshop":[stat], "Stats":[]}
 
 def updateButtons(screen):
     for i, Butt in enumerate(Buttons[assets.mode]):

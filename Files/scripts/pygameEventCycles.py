@@ -1,5 +1,6 @@
 import pygame
 import sys
+import ctypes
 import Files.scripts.assets as assets
 import Files.scripts.buttons as buttons
 import Files.scripts.BattlersDatabase as data
@@ -7,6 +8,15 @@ import Files.scripts.Data.Moves as MovesData
 
 def BaseCicle(event):
     if event.type == pygame.QUIT:
+        pygame.quit()
+        sys.exit()
+
+def InShopBaseCicle(event):
+    if event.type == pygame.QUIT:
+        with open("Files/stats.stt", 'w') as file:
+            file.write(str(assets.score))
+        with open("Files/modific.stt", 'w') as file:
+            file.write(','.join(map(str, assets.Stats)))
         pygame.quit()
         sys.exit()
 
@@ -54,10 +64,30 @@ def GameCicles(event):
         elif event.key == pygame.K_BACKSPACE:
             data.CurrentBattleAction = data.battleAction
 
-cicles = {"menu":MenuCicles, "game": GameCicles, "shop": ShopCicles}
+def Stats(event):
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.button == 1:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            for i, rect in enumerate(assets.ArrowRects):
+                if rect.collidepoint(mouse_x, mouse_y):
+                    input = ctypes.windll.user32.MessageBoxW(None, f"Vuoi spedere {assets.costo[assets.Stats[i]]} punti per Upgredare {data.Stats[i]}", "Game", 0x00000004)
+                    if input == 6:
+                        if assets.score >= assets.costo[assets.Stats[i]]:
+                            assets.score -= assets.costo[assets.Stats[i]]
+                            assets.Stats[i] += 0.1
+                        else:
+                            ctypes.windll.user32.MessageBoxW(0, 'SEI POVERO', 'Lolo', 0x10)
+    elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_ESCAPE:
+            assets.mode = "statshop"
+                        
+cicles = {"menu":MenuCicles, "game": GameCicles, "shop": ShopCicles, "statshop":MenuCicles,"Stats":Stats}
 
 def pygameEventCicles():
     for event in pygame.event.get():
-        BaseCicle(event)
+        if assets.SHOP:
+            InShopBaseCicle(event)
+        else:
+            BaseCicle(event)
         cicles[assets.mode](event)
                     

@@ -28,30 +28,58 @@ def Flitch(screen, self, enemy, move):
 def PAR(screen, self, enemy, move):
     if random.random() < MOVES[move]["PARChance"] / 100:
         if enemy.state == None:
-            Text = dialog.dialoge(f"{enemy.type} è paralizzato")
+            if MOVES[move]["target"] == "enemy":
+                Text = dialog.dialoge(f"{enemy.type} è paralizzato")
+                enemy.state = "PAR"
+            else:
+                Text = dialog.dialoge(f"{self.type} è paralizzato")
+                self.state = "PAR"
             Text.update(screen)
-            enemy.state = "PAR"
 
 def BRN(screen, self, enemy, move):
     if random.random() < MOVES[move]["BRNChance"] / 100:
         if enemy.state == None:
-            Text = dialog.dialoge(f"{enemy.type} è scottato")
+            if MOVES[move]["target"] == "enemy":
+                Text = dialog.dialoge(f"{enemy.type} è scottato")
+                enemy.state = "BRN"
+            else:
+                Text = dialog.dialoge(f"{self.type} è scottato")
+                self.state = "BRN"
             Text.update(screen)
-            enemy.state = "BRN"
-
+            
 def SLE(screen, self, enemy, move):
     if random.random() < MOVES[move]["SLEChance"] / 100:
         if enemy.state == None:
-            Text = dialog.dialoge(f"{enemy.type} è addormentato")
+            if MOVES[move]["target"] == "enemy":    
+                Text = dialog.dialoge(f"{enemy.type} è addormentato")
+                enemy.state = "SLE"
+            else:
+                Text = dialog.dialoge(f"{self.type} è addormentato")
+                self.state = "SLE"
             Text.update(screen)
-            enemy.state = "SLE"
 
+def DRG(screen, self, enemy, move):
+    if random.random() < MOVES[move]["DRGChance"] / 100:
+        if enemy.state == None:
+            if MOVES[move]["target"] == "enemy":
+                Text = dialog.dialoge(f"{enemy.type} è sotto effetto di qualcosa di strano")
+                enemy.state = "DRG"
+            else:
+                Text = dialog.dialoge(f"{self.type} è sotto effetto di qualcosa di strano")
+                self.state = "DRG"
+            Text.update(screen)
+ 
 def POI(screen, self, enemy, move):
     if random.random() < MOVES[move]["POIChance"] / 100:
         if enemy.state == None:
-            Text = dialog.dialoge(f"{enemy.type} è avvelenato")
+            if MOVES[move]["target"] == "enemy":
+                Text = dialog.dialoge(f"{enemy.type} è avvelenato")
+                enemy.state = "POI"
+            else:
+                Text = dialog.dialoge(f"{self.type} è avvelenato")
+                self.state = "POI"
             Text.update(screen)
-            enemy.state = "POI"
+            
 
 #animazioni
 def Defoult(screen, Move, Attacker, Defender, IsEnemy):
@@ -359,6 +387,22 @@ MOVES = {
         "precisione": 100,
         "target": "enemy"
     },
+    "Panschiaffo": {
+        "type": "cibo",
+        "MoveType": "Fisica",
+        "BasePower": 55,
+        "precisione": 95,
+        "target": "enemy"
+    },
+    "dormire": {
+        "type": "normale",
+        "MoveType": "State",
+        "target": "self",
+        "animation":State,
+        "Scripts":[SLE],
+        "SLEChance":100,
+        "Dex":"Chi la usa dorme"
+    },
     "ESPLOSIONE": {
         "type": "normale",
         "MoveType": "Fisica",
@@ -367,7 +411,8 @@ MOVES = {
         "target": "enemy",
         "animation": Brilla,
         "color": (255,255,255,85),
-        "Scripts": [AfterDie]
+        "Scripts": [AfterDie],
+        "Dex":"Chi la usa Esplode Morendo immediatamente"
         },
     "Ferrartigli": {
         "type": "acciaio",
@@ -382,7 +427,8 @@ MOVES = {
         "precisione": 100,
         "Stat": [{"stats": ["DIF"], "Power": 0.5, "Target":"self"}],
         "target": "self",
-        "animation":State
+        "animation":State,
+        "Dex":"Chi la usa aumenta la sua difesa"
     },
     "Terremoto": {
         "type": "terra",
@@ -402,7 +448,8 @@ MOVES = {
         "animation": Brilla,
         "color": (150,0,150,85),
         "Scripts":[POI],
-        "POIChance":10
+        "POIChance":10,
+        "Dex":"Può avvelenare l'avversario"
     },
     "Braciere": {
         "type": "fuoco",
@@ -414,7 +461,21 @@ MOVES = {
         "color": (255,200,0),
         "dimension":20,
         "Scripts":[BRN],
-        "BRNChance": 5
+        "BRNChance": 5,
+        "Dex":"Può scottare l'avversario"
+    },
+    "???": {
+        "type": "glitch",
+        "MoveType": "Magic",
+        "BasePower": 100,
+        "precisione": 85,
+        "target": "enemy",
+        "animation": LanciaPalle,
+        "color": (0,0,0),
+        "dimension":30,
+        "Scripts":[DRG],
+        "DRGChance": 5,
+        "Dex":"???"
     },
     "Sassata": {
         "type": "sasso",
@@ -430,9 +491,10 @@ MOVES = {
         "type": "gamer",
         "MoveType": "State",
         "precisione": 95,
-        "Stat": [{"stats": ["ATT","MAGIC"], "Power": 0.2, "Target":"self"}],
+        "Stat": [{"stats": ["ATT","MAGIC"], "Power": 0.25, "Target":"self"}],
         "target": "self",
-        "animation":State
+        "animation":State,
+        "Dex":"Chi la usa aumenta l'attacco ed la magia"
     },
     "vento": {
         "type": "gas",
@@ -442,7 +504,7 @@ MOVES = {
         "target": "enemy",
         "animation": LanciaPalle,
         "color": (200,200,200),
-        "dimension":15
+        "dimension":15,
     },
     "Tuonoshock": {
         "type": "elettro",
@@ -454,7 +516,8 @@ MOVES = {
         "color": (255,255,0),
         "dimension":20,
         "Scripts":[PAR],
-        "PARChance":10
+        "PARChance":10,
+        "Dex":"Può causare la paralisi"
     },
     "Tuononda":{
         "type": "elettro",
@@ -463,7 +526,8 @@ MOVES = {
         "target": "enemy",
         "animation":State,
         "Scripts":[PAR],
-        "PARChance":100
+        "PARChance":100,
+        "Dex":"Chi la usa paralizza l'avversario"
     },
     "Morso": {
         "type": "normale",
@@ -472,7 +536,8 @@ MOVES = {
         "precisione": 100,
         "target": "enemy",
         "FlitchChance":20,
-        "Scripts": [Flitch]
+        "Scripts": [Flitch],
+        "Dex":"può far tentennare l'avversario"
     },
     "Lanciafiamme": {
         "type": "fuoco",
@@ -484,19 +549,21 @@ MOVES = {
         "color": (255,200,0),
         "dimension":15,
         "Scripts":[BRN],
-        "BRNChance":12
+        "BRNChance":12,
+        "Dex":"Può scottare l'avversario"
     },
     "Brilla": {
         "type": "luce",
         "MoveType": "Magic",
         "BasePower": 80,
         "precisione": 85,
-        "Stat": [{"stats": ["PRECISIONE"], "Power": -0.3, "Target":"enemy", "probabilità":65}],
+        "Stat": [{"stats": ["PRECISIONE"], "Power": -0.25, "Target":"enemy", "probabilità":65}],
         "target": "enemy",
         "animation": Brilla,
         "color": (255,255,255,85),
         "FlitchChance":30,
-        "Scripts": [Flitch]
+        "Scripts": [Flitch],
+        "Dex":"Può sia Ridurre la precisione avversaria sia fallo tentennare"
     },
     "IPER RAGGIO": {
         "type": "magia",
@@ -508,7 +575,18 @@ MOVES = {
         "animation": LanciaPalle,
         "color": (255,255,255),
         "dimension":15,
-        "sound":"drip.mp3"
+        "sound":"drip.mp3",
+        "Dex":"Chi la usa lancia un raggio potentissimo che lo costringe a riposarsi al prossimo turno"
+    },
+    "INVESTIRE": {
+        "type": "malvaggio",
+        "MoveType": "Fisica",
+        "BasePower": 250,
+        "precisione": 85,
+        "Scripts": [AfterSkipTurn],
+        "target": "enemy",
+        "sound":"drip.mp3",
+        "Dex":"Chi lo usa investe l'avversario, ma dopo deve riposare"
     },
     "sanguisuga": {
         "type": "insetto",
@@ -516,25 +594,28 @@ MOVES = {
         "BasePower": 55,
         "precisione": 95,
         "ScriptDmage": [AssorbiVita],
-        "target": "enemy"
+        "target": "enemy",
+        "Dex":"Chi la usa succhia il sangue all'aversario curandosi"
     },
     "ronzio rompi palle": {
         "type": "insetto",
         "MoveType": "State",
-        "Stat": [{"stats": ["ELUSIONE"], "Power": 0.4, "Target":"self"}],
+        "Stat": [{"stats": ["ELUSIONE"], "Power": 0.35, "Target":"self"}],
         "precisione": 95,
         "target": "self",
         "animation": State,
-        "sound":"pew.mp3"
+        "sound":"pew.mp3",
+        "Dex":"Chi la usa fa rumori fastidiosi che aumentano la propria illusione"
     },
     "Ctrl+C Ctrl+V": {
         "type": "informatico",
         "MoveType": "State",
-        "Stat": [{"stats": ["ELUSIONE"], "Power": 0.7, "Target":"self"}],
+        "Stat": [{"stats": ["ELUSIONE"], "Power": 0.45, "Target":"self"}],
         "precisione": 100,
         "target": "self",
         "animation": State,
-        "sound":"pew.mp3"
+        "sound":"pew.mp3",
+        "Dex":"Chi la usa fa copia incolla su se stesso aumentando la propria illusione"
     },
     "inquinamento": {
         "type": "plastica",
@@ -546,7 +627,8 @@ MOVES = {
         "FlitchChance":5,
         "Scripts": [Flitch],
         "Scripts":[POI],
-        "POIChance":5
+        "POIChance":5,
+        "Dex":"Ha una piccola possibilita di avvelenare o far tentennare l'avversario"
     },
     "Dragoartigli": {
         "type": "drago",
@@ -555,7 +637,8 @@ MOVES = {
         "precisione": 90,
         "target": "enemy",
         "FlitchChance":5,
-        "Scripts": [Flitch]
+        "Scripts": [Flitch],
+        "Dex":"Ha una piccola possibilita di far tentennare l'avversario"
     },
     "Erba schiaffo": {
         "type": "erba",
@@ -578,7 +661,8 @@ MOVES = {
         "precisione": 90,
         "target": "enemy",
         "FlitchChance":8,
-        "Scripts": [Flitch]
+        "Scripts": [Flitch],
+        "Dex":"Può far tentennare l'avversario"
     },
     "Pistolacqua": {
         "type": "acqua",
@@ -608,8 +692,9 @@ MOVES = {
         "target": "enemy",
         "sound":"rick.mp3",
         "FlitchChance":8,
-        "Scripts": [Flitch]
-    },
+        "Scripts": [Flitch],
+        "Dex":"può far tentennare l'aversario"
+                },
     "sparo": {
         "type": "pistola",
         "MoveType": "Fisica",
@@ -621,51 +706,68 @@ MOVES = {
         "dimension":30,
         "sound":"gun.mp3",
         "FlitchChance":8,
-        "Scripts": [Flitch]
+        "Scripts": [Flitch],
+        "Dex":"Chi la usa SPARA l'avversario con una piccola possibilità di farlo tentennare"
     },
     "ballo": {
         "type": "meme",
         "MoveType": "State",
-        "Stat": [{"stats": ["ATT", "DIF","VEL"], "Power": 0.3, "Target":"self"}],
+        "Stat": [{"stats": ["ATT", "DIF","VEL"], "Power": 0.35, "Target":"self"}],
         "precisione": 80,
         "target": "self",
         "animation": State,
-        "sound":"drip.mp3"
+        "sound":"drip.mp3",
+        "Dex":"Chi la usa fa un piccolo ballo che aumenta Attacco, Difesa e velocità"
     },
     "IMPOSTOR": {
         "type": "meme",
         "MoveType": "State",
-        "Stat": [{"stats": ["ATT"], "Power": 0.4, "Target":"self"},{"stats": ["DIF"], "Power": -0.2, "Target":"self"}],
+        "Stat": [{"stats": ["ATT"], "Power": 0.6, "Target":"self"},{"stats": ["DIF"], "Power": -0.35, "Target":"self"}],
         "target": "self",
         "animation": State,
-        "sound":"sus.mp3"
+        "sound":"sus.mp3",
+        "Dex":"Chi lo usa è molto SUS diminuendo la difesa ma aumentando di molto l'attacco"
     },
     "Machine Learning": {
         "type": "AI",
         "MoveType": "State",
-        "Stat": [{"stats": ["ATT","MAGIC","DIF","FUN","VEL"], "Power": 0.6, "Target":"self"}],
+        "Stat": [{"stats": ["ATT","MAGIC","DIF","FUN","VEL"], "Power": 0.5, "Target":"self"}],
         "precisione": 100,
         "Scripts": [AfterSkipTurn],
         "target": "self",
-        "animation": State
+        "animation": State,
+        "Dex":"Chi la usa si allena a diventare più intelligente aumentando tutte le statistiche, ma il turno dopo deve riposare"
+    },
+    "VODKA": {
+        "type": "veleno",
+        "MoveType": "State",
+        "Stat": [{"stats": ["ATT","MAGIC","DIF","FUN","VEL"], "Power": 0.35, "Target":"self"}],
+        "precisione": 100,
+        "Scripts": [DRG],
+        "DRGChance":100,
+        "target": "self",
+        "animation": State,
+        "Dex":"Chi la usa ottiene lo sato DRG ma aumenta tutte le statistiche"
     },
     "rugito": {
         "type": "normale",
         "MoveType": "State",
-        "Stat": [{"stats": ["ATT"], "Power": -0.2, "Target":"enemy"}],
+        "Stat": [{"stats": ["ATT"], "Power": -0.25, "Target":"enemy"}],
         "precisione": 100,
         "target": "enemy",
         "animation": State,
-        "sound":"roar.mp3"
+        "sound":"roar.mp3",
+        "Dex":"Chi lo usa diminuise l'attacco avversario"
     },
     "Fissare": {
         "type": "normale",
         "MoveType": "State",
-        "Stat": [{"stats": ["PRECISIONE"], "Power": 1, "Target":"self"},{"stats": ["DIF"], "Power": -0.1, "Target":"enemy"}],
+        "Stat": [{"stats": ["PRECISIONE"], "Power": 0.4, "Target":"self"},{"stats": ["DIF"], "Power": -0.15, "Target":"enemy"}],
         "precisione": 100,
         "target": "self",
         "animation": State,
-        "sound":"pew.mp3"
+        "sound":"pew.mp3",
+        "Dex":"Chi la usa aumenta la propria precisione e diminuisce la difesa avversaria"
     },
     "carineria": {
         "type": "cute",
@@ -673,6 +775,7 @@ MOVES = {
         "BasePower": 80,
         "Stat": [{"stats": ["DIF"], "Power": -0.1, "Target":"self", "probabilità":35}],
         "precisione": 90,
-        "target": "enemy"
+        "target": "enemy",
+        "Dex":"Può ridurre la propria difesa"
     }
 }

@@ -1,3 +1,4 @@
+from itertools import chain
 import pygame
 import random
 import ctypes
@@ -11,9 +12,10 @@ from Files.scripts.Data.Battlers import BattlersType
 
 Stats = ["HP","ATT","MAGIC","DIF","FUN","VEL"]
 
-squadra = [Battlers(random.choice(list(BattlersType.keys())), 5)]
+squadra = [Battlers(random.choice(assets.spawn_list), 5)]
 
 Gino1 = squadra[0]
+
 
 def Buy():
     global squadra
@@ -23,14 +25,14 @@ def Buy():
         for battlers in squadra:
             levels.append(battlers.level)
         LevelBase =  sum(levels) / len(levels)
-        squadra.append(Battlers(random.choice(list(BattlersType.keys())), random.randint(round(LevelBase * 0.8), round(LevelBase * 1.2))))
+        squadra.append(Battlers(random.choice(assets.spawn_list), random.randint(round(LevelBase * 0.8), round(LevelBase * 1.2))))
     else:
         ctypes.windll.user32.MessageBoxW(0, 'Hai la squadra piena', 'Lolo', 0x10)
 
 Level = 2
 
 def RandomizeEnemy():
-    return Battlers(random.choice(list(BattlersType.keys())), random.randint(round(Level * 0.7), round(Level * 1.3)), True)
+    return Battlers(random.choice(assets.spawn_list), random.randint(round(Level * 0.7), round(Level * 1.3)), True)
 
 Gino2 = RandomizeEnemy()
 
@@ -61,33 +63,40 @@ def DrawBattleSelection(screen):
     screen.blit(surface, (Width - scaleX, Height - scale))
 
 def EndTurnChecks(screen):
-    global Gino2, Gino1, Level
+    global Gino2, Gino1, Level,CurrentBattleAction
     Return = True
-    if Gino2.HP < 1:
-        Text = dialog.dialoge(Gino2.type + " non ha più energie")
-        Text.update(screen)
-        Gino1.ExpDropped(Gino2, screen)
-        Gino2 = RandomizeEnemy()
-        Level += random.choice([0,0,0,0,0,1,1,1,2,-1,-1])
-        assets.score += 1
-        Return = False
+    Change = False
     if Gino1.HP < 1:
         Text = dialog.dialoge(Gino1.type + " non ha più energie")
         Text.update(screen)
         squadra.remove(Gino1)
         del Gino1
         if len(squadra) > 0:
-            while True:
-                ViewTeam(screen)
-                try:
-                    Gino1
-                    break
-                except:
-                    pass
+            Change = True
+            CurrentBattleAction = battleAction
             Return = False
         else:
             print(assets.score)
+            End()
             quit()
+    if Gino2.HP < 1:
+        Text = dialog.dialoge(Gino2.type + " non ha più energie")
+        Text.update(screen)
+        if Return:
+            Gino1.ExpDropped(Gino2, screen)
+        Gino2 = RandomizeEnemy()
+        Level += random.choice([0,0,0,0,0,1,1,1,2,-1,-1])
+        Level = max(1,Level)
+        assets.score += 1
+        Return = False
+    if Change:
+         while True:
+            ViewTeam(screen)
+            try:
+                Gino1
+                break
+            except:
+                pass
     return Return
 
 def PlayerTurn(screen, playerMove):
@@ -188,4 +197,10 @@ def ViewTeam(screen):
                         else:
                             Gino1 = squadra[i]
 
-            
+def End():
+    with open("Files/stats.stt", 'r') as file:
+        lines = [line.rstrip('\n') for line in file.readlines()]
+    TotalScore = int(lines[0])
+    TotalScore += assets.score
+    with open("Files/stats.stt", 'w') as file:
+        file.write(str(TotalScore))
