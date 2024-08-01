@@ -1,5 +1,7 @@
 import pygame
 
+from Files.scripts import assets
+
 def scrivirobebelle():
     input_text = ""
     for event in pygame.event.get():
@@ -43,3 +45,8 @@ def draw_rounded_rect(surface, color, rect, radius):
     pygame.draw.circle(surface, color, (x + width - radius, y + radius), radius)
     pygame.draw.circle(surface, color, (x + radius, y + height - radius), radius)
     pygame.draw.circle(surface, color, (x + width - radius, y + height - radius), radius)
+
+def create_sound(file_path):
+    sound = pygame.mixer.Sound(file_path)
+    sound.set_volume(assets.volume)
+    return sound

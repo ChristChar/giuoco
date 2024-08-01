@@ -11,3 +11,4 @@ mode = "menu"
 World = None
 SHOP = False
 Stats = {"HP":1,"ATT":1,"MAGIC":1,"DIF":1,"FUN":1,"VEL":1}
+volume = 1

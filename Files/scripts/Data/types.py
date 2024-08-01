@@ -1,32 +1,9 @@
 import random
+import json
 
-types = {"fuoco":{"acqua": 2,"sasso": 1.8,"erba":0.5,"fuoco":0.5, "terra":2, "luce":0.5, "ghiaccio":0.3, "acciaio":0.6},
-         "acqua":{"erba":2,"elettro":2,"fuoco":0.5, "acqua":0.5, "ghiaccio":0.5},
-         "erba":{"fuoco":2,"acqua":0.5,"erba":0.6, "insetto":2.5, "gamer":1.7, "luce":0, "gas":0.5, "ghiaccio":2},
-         "elettro":{"terra":2,"plastica":2,"acqua":0.5,"elettro":0.4},
-         "sasso":{"acqua":2,"erba":2,"fuoco":0.4, "acciaio":2},
-         "terra":{"acqua":1.8,"erba":2,"fuoco":0.5,"elettro":0,"ghiaccio":1.5, "cibo":0},
-         "luce":{"erba":3, "malvaggio":0.6, "fuoco":0.5, "gamer":0.8, "insetto":0.6},
-         "ghiaccio":{"fuoco":2, "acqua":0.6, "luce":1.8, "acciaio":1.8},
-         "acciaio":{"fuoco":2,"elettro":2,"insetto":0.5, "erba":0.5, "pistola":0.5,"veleno":0},
-         "gas":{"terra":0,"elettro":0,"pistola":0, "luce":0},
-         "normale":{"pistola":3, "AI":2, "gamer":1.1, "spazio":1.9,"gas":0.4, "veleno":1.5, "glitch":1.4, "cibo":0.5},
-         "veleno":{"terra":1.5,"sasso":1.5,"acciaio":1.5,"plastica":1.5,"normale":0.7,"cute":0.7,"insetto":0.8},
-         "meme":{"cringe":2.5, "AI":1.7, "gamer":1.2, "cute":0.7},
-         "cringe":{"cute":2,"meme":0.5, "AI":0.6, "gamer":1.2},
-         "magia":{"meme":1.5,"malvaggio":0.5,"plastica":1.8, "insetto":1.4, "cibo":1.5},
-         "malvaggio":{"magia":2,"cute":0, "gamer":1.1, "luce":1.7},
-         "cute":{"malvaggio":2,"pistola":2,"plastica":1.6,"veleno":1.5},
-         "pistola":{"fuoco":2, "magia":2,"cute":0.4},
-         "drago":{"cute":4,"ghiaccio":1.5, "pistola":0.6, "malvaggio":0.4,"meme":0.8,"veleno":1.2},
-         "plastica":{"fuoco":2.2,"acciaio":1.5, "elettro":0, "veleno":0},
-         "insetto": {"fuoco":2.5, "sasso":2, "luce":1.8, "erba":0.8, "gas":1.2, "veleno":1.4, "terra":0.4, "glitch":0.7},
-         "AI": {"elettro":1.4, "cringe":0.4, "normale":0.5, "informatico":0.5},
-         "informatico": {"acqua":4, "AI":1.3, "insetto":1.5, "gamer":0.8, "fuoco":1.5, "glitch":2,"cibo":2},
-         "gamer":{"erba":1.5,"luce":1.5, "insetto":2, "informatico":0.7, "AI":0.5,"gas":0.5, "glitch":1.5, "cibo":0.5},
-         "spazio":{"luce":0.5, "fuoco":0.5,"normale":0.5,"sasso":0.5,"drago":1.5, "gas":0},
-         "glitch":{"AI":2,"insetto":0.7, "gamer":1.5},
-         "cibo":{"normale":2,"insetto":2, "veleno":1.5,"luce":0.7,"gas":0.7,"fuoco":2,"acqua":1.5,"pistola":0.5,"informatico":0.7}}
+f = open('Files/JSON/TypeData.json')
+
+types = json.load(f)
 
 TypesColor = {"fuoco":(255,180,0),
                 "acqua":(0,255,255),

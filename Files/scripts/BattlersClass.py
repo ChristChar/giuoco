@@ -440,7 +440,7 @@ class Battlers:
         return MoveOption
     
     def ExpDropped(self, enemy, screen, num_participants = 1):
-        exp = (BattlersType[enemy.type]["baseEXP"] * enemy.level) / (6 * num_participants)
+        exp = (BattlersType[enemy.type]["baseEXP"] * enemy.level) / (5.5 * num_participants)
         self.EXP += exp
         for stat, n in BattlersType[enemy.type]["EVS"].items():
             self.EVS[stat] += n

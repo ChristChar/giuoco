@@ -9,6 +9,7 @@ from Files.scripts.BattlersClass import Battlers
 import Files.scripts.pygameEventCycles as Cycles
 import Files.scripts.BattlersSpawnChance as E
 from Files.scripts.Data.Battlers import BattlersType
+from Files.scripts.animation.DeathAnimation import Death
 
 assets.World = random.choice(list(world.World.keys()))
 
@@ -75,10 +76,9 @@ def EndTurnChecks(screen):
     Return = True
     Change = False
     if Gino1.HP < 1:
-        Text = dialog.dialoge(Gino1.type + " non ha più energie")
-        Text.update(screen)
+        Death(screen, Gino1, Gino2, False)
         squadra.remove(Gino1)
-        del Gino1
+        Gino1 = None
         if len(squadra) > 0:
             Change = True
             CurrentBattleAction = battleAction
@@ -88,8 +88,7 @@ def EndTurnChecks(screen):
             End()
             quit()
     if Gino2.HP < 1:
-        Text = dialog.dialoge(Gino2.type + " non ha più energie")
-        Text.update(screen)
+        Death(screen, Gino2, Gino1, True)
         if ToNextWorld <= 0:
             ToNextWorld = random.randint(5,15)
             assets.World = random.choice(list(world.World.keys()))
@@ -104,13 +103,8 @@ def EndTurnChecks(screen):
         ToNextWorld -= 1
         
     if Change:
-         while True:
+         while Gino1 is None:
             ViewTeam(screen)
-            try:
-                Gino1
-                break
-            except:
-                pass
     return Return
 
 def PlayerTurn(screen, playerMove):
@@ -174,10 +168,12 @@ def ViewTeam(screen):
         for row in range(2):
             for col in range(3):
                 if len(squadra) > itemN:
-                    x = col * (grid_width + horizontal_space)
-                    y = row * (grid_height + vertical_space)
-                    screen.blit(pygame.transform.scale(BattlersType[squadra[itemN].type]["sprite"], (225,225)), (x, y)) 
+                    x = col * (grid_width + horizontal_space) + screen_width / 24
+                    y = row * (grid_height + vertical_space) + screen_height / 24
                     rects[itemN].x, rects[itemN].y = x,y 
+                    if squadra[itemN] == Gino1:
+                        F.draw_rounded_rect(screen, (240,240,240),rects[itemN],10)
+                    screen.blit(pygame.transform.scale(BattlersType[squadra[itemN].type]["sprite"], (225,225)), (x, y)) 
                     itemN += 1
         mouse_x, mouse_y = pygame.mouse.get_pos()
         for i, rect in enumerate(rects):
@@ -200,7 +196,7 @@ def ViewTeam(screen):
         for event in pygame.event.get():
             Cycles.BaseCicle(event)
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
                     return
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()

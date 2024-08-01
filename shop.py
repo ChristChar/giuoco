@@ -7,7 +7,6 @@ import Files.scripts.draw as Draw
 import Files.scripts.pygameEventCycles as Cycles
 
 
-
 with open("Files/stats.stt", 'r') as file:
     lines = [line.rstrip('\n') for line in file.readlines()]
 assets.score = int(lines[0])

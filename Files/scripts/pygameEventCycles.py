@@ -3,6 +3,7 @@ import sys
 import ctypes
 import Files.scripts.assets as assets
 import Files.scripts.buttons as buttons
+import Files.scripts.setting as setting
 import Files.scripts.BattlersDatabase as data
 import Files.scripts.Data.Moves as MovesData
 import Files.scripts.Data.world as World
@@ -11,6 +12,9 @@ def BaseCicle(event):
     if event.type == pygame.QUIT:
         pygame.quit()
         sys.exit()
+    elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_s:
+            setting.open_settings_window()
 
 def InShopBaseCicle(event):
     if event.type == pygame.QUIT:
@@ -31,7 +35,7 @@ def ShopCicles(event):
         if event.button == 1:
             buttons.ControllButtons(event)
     elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_ESCAPE:
+        if event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
             assets.mode = "game"
 
 def GameCicles(event):
@@ -62,7 +66,7 @@ def GameCicles(event):
                 assets.mode = "shop"
             elif data.CurrentBattleAction[assets.BattleMenuSelectedY][assets.BattleMenuSelectedX] == "Battlers":
                 data.ViewTeam(assets.screen)
-        elif event.key == pygame.K_BACKSPACE:
+        elif event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
             data.CurrentBattleAction = data.battleAction
 
 def Stats(event):
