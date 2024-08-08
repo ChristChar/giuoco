@@ -50,3 +50,6 @@ def create_sound(file_path):
     sound = pygame.mixer.Sound(file_path)
     sound.set_volume(assets.volume)
     return sound
+
+def Sottrai_liste(list1,list2):
+    return [item for item in list1 if item not in list2]

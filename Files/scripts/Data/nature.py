@@ -16,4 +16,7 @@ NaturMove = {"MEMER":["rickroll","ballo"],
              "TANK":["Ferroscudo"],
              "Ballerina":["ballo"],
              "Pigra":["dormire"],
-             "Inutile":["dormire"]}
+             "Inutile":["dormire"],
+             "Pazza":["ESPLOSIONE"],
+             "Gamer":["Trhyhard","Spammare A"],
+             "italiana":["Lanciare la pizza"]}

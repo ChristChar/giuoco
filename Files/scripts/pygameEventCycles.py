@@ -56,15 +56,16 @@ def GameCicles(event):
             if assets.BattleMenuSelectedX == 0:
                 assets.BattleMenuSelectedX = 1
         elif event.key == pygame.K_RETURN:
-            if data.CurrentBattleAction[assets.BattleMenuSelectedY][assets.BattleMenuSelectedX] == "lotta":
+            action = data.CurrentBattleAction[assets.BattleMenuSelectedY][assets.BattleMenuSelectedX]
+            if action == "lotta":
                 data.CurrentBattleAction = data.Gino1.MakeMoveList()
-            elif data.CurrentBattleAction[assets.BattleMenuSelectedY][assets.BattleMenuSelectedX] == "-":
+            elif action == "-":
                 pass
-            elif data.CurrentBattleAction[assets.BattleMenuSelectedY][assets.BattleMenuSelectedX] in MovesData.MOVES:
-                data.Turn(assets.screen, data.CurrentBattleAction[assets.BattleMenuSelectedY][assets.BattleMenuSelectedX] )
-            elif data.CurrentBattleAction[assets.BattleMenuSelectedY][assets.BattleMenuSelectedX] == "negozio":
+            elif action in MovesData.MOVES and data.Gino1.PP[action] > 0:
+                data.Turn(assets.screen, action)
+            elif action == "negozio":
                 assets.mode = "shop"
-            elif data.CurrentBattleAction[assets.BattleMenuSelectedY][assets.BattleMenuSelectedX] == "Battlers":
+            elif action == "Battlers":
                 data.ViewTeam(assets.screen)
         elif event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
             data.CurrentBattleAction = data.battleAction

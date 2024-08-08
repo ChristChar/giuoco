@@ -14,6 +14,10 @@ def AssorbiVita(screen, damage, self):
     Text = dialog.dialoge(f"{self.type} si cura!")
     Text.update(screen)
 
+def RigeneraVita(screen,self,enemy,move):
+    Heal = self.maxHP * (MOVES[move]["Heal%"] / 100)
+    self.HP = min(self.HP+Heal, self.maxHP)
+
 def AfterSkipTurn(screen, self, enemy, move):
     self.riposo = True
 
@@ -78,9 +82,6 @@ def POI(screen, self, enemy, move):
                 Text = dialog.dialoge(f"{self.type} è avvelenato")
                 self.state = "POI"
             Text.update(screen)
-            
-
-#animazioni
 
         
 f = open('Files/JSON/MoveData.json')

@@ -1,6 +1,5 @@
 import tkinter as tk
 import json
-import threading
 from Files.scripts import assets
 
 # Variabile globale per il widget dello slider del volume
@@ -19,7 +18,7 @@ def save_settings(settings):
 
 def apply_settings(): 
     global volume_slider
-    assets.volume = volume_slider.get()
+    assets.volume = volume_slider.get() / 100
     save_settings({"volume": assets.volume})  # Corretto per salvare come dizionario
 
 def open_settings_window():
@@ -32,7 +31,7 @@ def open_settings_window():
 
     tk.Label(settings_window, text="Volume:").pack()
     volume_slider = tk.Scale(settings_window, from_=0, to=100, orient=tk.HORIZONTAL)
-    volume_slider.set(settings["volume"])  # Corretto per usare il valore del volume
+    volume_slider.set(settings["volume"] * 100)  # Corretto per usare il valore del volume
     volume_slider.pack()
 
     apply_button = tk.Button(settings_window, text="Applica", command=apply_settings)

@@ -10,7 +10,7 @@
       },
       "types": ["meme", "AI"],
       "moves": {
-        "start": ["azione", "rickroll", "ballo"]
+        "start": ["azione", "rickroll", "ballo"],"7":["Chilling"]
       },
       "baseEXP": 245,
       "growth_rate": "Slow",
@@ -28,9 +28,9 @@
         "FUN": 95,
         "VEL": 93
       },
-      "types": ["meme"],
+      "types": ["meme","spazio"],
       "moves": {
-        "start": ["azione", "ballo", "rugito", "IMPOSTOR"]
+        "start": ["azione", "ballo", "rugito", "IMPOSTOR"],"6":["Trhyhard"],"9":["AssorbO2"]
       },
       "baseEXP": 201,
       "growth_rate": "Medium Slow",
@@ -51,7 +51,7 @@
       },
       "types": ["normale", "cute", "meme"],
       "moves": {
-        "start": ["azione", "carineria", "rugito"]
+        "start": ["azione", "carineria", "rugito"], "8":["Morso"]
       },
       "baseEXP": 223,
       "growth_rate": "Fast",
@@ -71,7 +71,7 @@
       },
       "types": ["sasso", "pistola"],
       "moves": {
-        "start": ["azione", "sparo", "Fissare", "Sassata"]
+        "start": ["azione", "sparo", "Fissare", "Sassata"], "10":["Ctrl+C Ctrl+V"]
       },
       "baseEXP": 218,
       "growth_rate": "Medium Slow",
@@ -92,7 +92,7 @@
       },
       "types": ["acqua", "normale"],
       "moves": {
-        "start": ["rugito", "Pistolacqua"]
+        "start": ["rugito", "Pistolacqua"],"7":["Piscioacqua"]
       },
       "baseEXP": 113,
       "growth_rate": "Fast",
@@ -112,7 +112,7 @@
       },
       "types": ["erba", "fuoco"],
       "moves": {
-        "start": ["Erba schiaffo", "rugito", "Braciere"]
+        "start": ["Erba schiaffo", "rugito", "Braciere"],"10":["Lanciafiamme"]
       },
       "baseEXP": 97,
       "growth_rate": "Fast",
@@ -132,7 +132,7 @@
       },
       "types": ["erba", "acqua"],
       "moves": {
-        "start": ["Erba schiaffo", "Pistolacqua", "Fissare"]
+        "start": ["Erba schiaffo", "Pistolacqua", "Fissare"],"7":["Piscioacqua"]
       },
       "baseEXP": 97,
       "growth_rate": "Fast",
@@ -152,7 +152,7 @@
       },
       "types": ["erba", "elettro"],
       "moves": {
-        "start": ["Erba schiaffo", "Tuonoshock", "Tuononda"]
+        "start": ["Erba schiaffo", "Tuonoshock", "Tuononda"],"7":["Conduttore"]
       },
       "baseEXP": 97,
       "growth_rate": "Fast",
@@ -172,7 +172,7 @@
       },
       "types": ["erba"],
       "moves": {
-        "start": ["Erba schiaffo", "rugito"]
+        "start": ["Erba schiaffo", "rugito"],"12":["Radice schiaffo"]
       },
       "baseEXP": 108,
       "growth_rate": "Fast",
@@ -192,7 +192,7 @@
       },
       "types": ["erba", "veleno"],
       "moves": {
-        "start": ["Erba schiaffo", "VODKA", "smog"]
+        "start": ["Erba schiaffo", "VODKA", "smog"],"9":["Veleno schiaffo"]
       },
       "baseEXP": 97,
       "growth_rate": "Fast",
@@ -212,7 +212,7 @@
       },
       "types": ["erba", "sasso"],
       "moves": {
-        "start": ["Erba schiaffo", "Fissare", "Sassata"]
+        "start": ["Erba schiaffo", "Fissare", "Sassata"],"12":["Terremoto"]
       },
       "baseEXP": 97,
       "growth_rate": "Fast",
@@ -233,7 +233,7 @@
       },
       "types": ["drago"],
       "moves": {
-        "start": ["Dragoartigli", "rugito"]
+        "start": ["Dragoartigli", "rugito"],"10":["Dragoassalto"]
       },
       "baseEXP": 325,
       "growth_rate": "Fluctuating",
@@ -255,7 +255,7 @@
       },
       "types": ["plastica", "acqua"],
       "moves": {
-        "start": ["inquinamento", "Pistolacqua"]
+        "start": ["inquinamento", "Pistolacqua"],"6":["Chilling"]
       },
       "baseEXP": 214,
       "growth_rate": "Medium Slow",
@@ -276,7 +276,7 @@
       },
       "types": ["insetto", "malvaggio"],
       "moves": {
-        "start": ["sanguisuga", "ronzio rompi palle", "INVESTIRE"]
+        "start": ["sanguisuga", "ronzio rompi palle"],"7": ["INVESTIRE"]
       },
       "baseEXP": 214,
       "growth_rate": "Medium Fast",
@@ -297,7 +297,7 @@
       },
       "types": ["AI", "informatico"],
       "moves": {
-        "start": ["taskkill", "Machine Learning"]
+        "start": ["taskkill", "Machine Learning"],"6":["ImmaginiAI"]
       },
       "baseEXP": 134,
       "growth_rate": "Slow",
@@ -318,7 +318,7 @@
       },
       "types": ["informatico"],
       "moves": {
-        "start": ["taskkill", "Ctrl+C Ctrl+V"]
+        "start": ["taskkill", "Ctrl+C Ctrl+V"],"7":["ImmaginiAI"]
       },
       "baseEXP": 243,
       "growth_rate": "Medium Slow",
@@ -339,7 +339,7 @@
       },
       "types": ["informatico", "meme"],
       "moves": {
-        "start": ["IPER RAGGIO", "Fissare"]
+        "start": ["IPER RAGGIO", "Fissare"],"6":["hur hur hur"],"8":["jumpscare"]
       },
       "baseEXP": 312,
       "growth_rate": "Slow",
@@ -361,7 +361,7 @@
       },
       "types": ["fuoco", "luce", "spazio"],
       "moves": {
-        "start": ["IPER RAGGIO", "Brilla", "Lanciafiamme"]
+        "start": ["Brilla","Braciere"],"6":["Lanciafiamme"],"11":["IPER RAGGIO"]
       },
       "baseEXP": 436,
       "growth_rate": "Fluctuating",
@@ -383,7 +383,7 @@
       },
       "types": ["acqua", "cute"],
       "moves": {
-        "start": ["Pistolacqua", "carineria", "rugito"]
+        "start": ["Pistolacqua", "carineria", "rugito"],"6":["Piscioacqua"]
       },
       "baseEXP": 64,
       "growth_rate": "Fast",
@@ -403,7 +403,7 @@
       },
       "types": ["acqua", "ghiaccio", "drago"],
       "moves": {
-        "start": ["Pistolacqua", "Dragoartigli", "Geloraggio", "rugito"]
+        "start": ["Pistolacqua", "Dragoartigli", "Geloraggio", "rugito"],"7":["Piscioacqua"]
       },
       "baseEXP": 102,
       "growth_rate": "Medium Fast",
@@ -424,7 +424,7 @@
       },
       "types": ["normale"],
       "moves": {
-        "start": ["rugito", "Morso", "carineria"]
+        "start": ["rugito", "Morso", "carineria"],"8":["Sgranocchio"]
       },
       "baseEXP": 82,
       "growth_rate": "Medium Fast",
@@ -433,6 +433,26 @@
       },
       "Dex": "BAU"
     },
+    "Capibara": {
+        "BaseStat": {
+          "HP": 90,
+          "ATT": 35,
+          "MAGIC": 12,
+          "DIF": 101,
+          "FUN": 75,
+          "VEL": 28
+        },
+        "types": ["normale","meme"],
+        "moves": {
+          "start": ["azione","Chilling","Ferroscudo","Fissare"],"10":["Conduttore"]
+        },
+        "baseEXP": 91,
+        "growth_rate": "Medium Slow",
+        "EVS": {
+          "DIF": 1
+        },
+        "Dex": "CAPIBARA capibara, Capibara Capibara Capibara, CAPIBARA capibara, CAPIBARA CAPIBARA CAPIBARA"
+      },
     "Nuvola": {
       "BaseStat": {
         "HP": 104,
@@ -444,7 +464,7 @@
       },
       "types": ["gas", "acqua", "elettro"],
       "moves": {
-        "start": ["Pistolacqua", "Tuonoshock", "vento"]
+        "start": ["Pistolacqua", "Tuonoshock", "vento"],"7":["Conduttore"]
       },
       "baseEXP": 74,
       "growth_rate": "Fast",
@@ -464,8 +484,8 @@
       },
       "types": ["gamer", "informatico", "luce"],
       "moves": {
-        "start": ["Brilla", "Tuonoshock", "taskkill", "Trhyhard"]
-      },
+        "start": ["Brilla", "Tuonoshock", "taskkill", "Trhyhard","Spammare A"],"9":["Ctrl+C Ctrl+V"]
+    },
       "baseEXP": 127,
       "growth_rate": "Fast",
       "EVS": {
@@ -485,7 +505,7 @@
       },
       "types": ["erba", "terra"],
       "moves": {
-        "start": ["Terremoto", "Radice schiaffo"]
+        "start": ["Terremoto", "Radice schiaffo"],"9":["Chilling"]
       },
       "baseEXP": 128,
       "growth_rate": "Fast",
@@ -506,7 +526,7 @@
       },
       "types": ["acciaio"],
       "moves": {
-        "start": ["Ferrartigli", "Ferroscudo"]
+        "start": ["Ferrartigli", "Ferroscudo"],"6":["azione"]
       },
       "baseEXP": 56,
       "growth_rate": "Fast",
@@ -611,7 +631,7 @@
       },
       "types": ["cibo"],
       "moves": {
-        "start": ["azione", "Panschiaffo"]
+        "start": ["azione", "Panschiaffo"],"8":["Lanciare la pizza"]
       },
       "baseEXP": 73,
       "growth_rate": "Medium Fast",
@@ -620,6 +640,68 @@
         "DIF": 1
       },
       "Dex": "PANE, dolce PANE"
-    }
+    },
+    "Biscotto": {
+        "BaseStat": {
+          "HP": 80,
+          "ATT": 70,
+          "MAGIC": 26,
+          "DIF": 103,
+          "FUN": 85,
+          "VEL": 55
+        },
+        "types": ["cibo"],
+        "moves": {
+          "start": ["Ferroscudo", "Panschiaffo"],"9":["Lanciare la pizza"]
+        },
+        "baseEXP": 84,
+        "growth_rate": "Fast",
+        "EVS": {
+          "FUN": 1,
+          "DIF": 1
+        },
+        "Dex": "COOKIE"
+      },
+    "Alieno": {
+        "BaseStat": {
+          "HP": 55,
+          "ATT": 13,
+          "MAGIC": 66,
+          "DIF": 24,
+          "FUN": 46,
+          "VEL": 75
+        },
+        "types": ["spazio","cute"],
+        "moves": {
+          "start": ["Assorbi Luce","carineria"],"6":["Fissare"]
+        },
+        "baseEXP": 120,
+        "growth_rate": "Medium Fast",
+        "EVS": {
+          "MAGIC": 1,
+          "VEL": 1
+        },
+        "Dex": "Questo alieno proviene da un pianeta lontanissimo dove i sassi non esistono =O"
+      },
+    "Coccinella": {
+          "BaseStat": {
+            "HP": 45,
+            "ATT": 255,
+            "MAGIC": 5,
+            "DIF": 62,
+            "FUN": 8,
+            "VEL": 13
+          },
+          "types": ["insetto","malvaggio","veleno"],
+          "moves": {
+            "start": ["Coleomorso","dormire","Veleno schiaffo"],"6":["Ferroscudo"],"8":["jumpscare"]
+          },
+          "baseEXP": 125,
+          "growth_rate": "Slow",
+          "EVS": {
+            "ATT": 3
+          },
+          "Dex": "La coccinella è un grande predatore senza scrupoli"
+        }
   }
   

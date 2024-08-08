@@ -204,7 +204,7 @@ def LanciaPalle(screen, Move, Attacker, Defender, IsEnemy):
             sprite = pygame.transform.scale(DefenderImage, (scale, scale))
             screen.blit(sprite, (Dx, Dy))
         
-        pygame.draw.circle(screen, BALL_COLOR, (Bx, By), round(Height / DIMENSION))
+        pygame.draw.circle(screen, BALL_COLOR, (Bx, By), round(DIMENSION / (Height / 1080)))
 
         Text.draw(screen)
 

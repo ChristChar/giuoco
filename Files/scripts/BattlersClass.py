@@ -25,20 +25,38 @@ class Battlers:
         self.EXP = 0
         self.riposo = False
         self.flitch = False
-        self.moves = BattlersType[self.type]["moves"]["start"].copy()
-        if self.natura in NaturMove:
-            NewMove = random.choice(NaturMove[self.natura])
-            if len(self.moves) < 4:
-                self.moves.append(NewMove)
-            elif random.random() < 0.6:
-                self.moves[random.randint(0,3)] = NewMove
+        self.LearnableMoves = self.Calcolate_learnable_Moves()
+        self.moves = random.sample(self.LearnableMoves, min(4, len(self.LearnableMoves)))
         self.gender = random.choice(["♀","♂"])
         self.isEnemy = isEnemy
         MAXHP = self.Stat_Calculate()["HP"]
         self.HP = MAXHP
         self.maxHP = MAXHP
+        self.PP = {}
+        self.ResetPP()
+
+
+
+
+    def ResetPP(self):
+        self.PP = {}
+        for move in self.LearnableMoves:
+            self.PP[move] = MOVES[move]["PP"]
+
+    def UpdatePP(self):
+         # Aggiorna i PP per le mosse attuali
+        updated_PP = {}
+        for move in self.LearnableMoves:
+            if move in self.PP:
+                # Mantieni il PP corrente se la mossa esiste già
+                updated_PP[move] = self.PP[move]
+            else:
+                # Aggiungi la nuova mossa con il suo PP iniziale
+                updated_PP[move] = MOVES[move]["PP"]
         
-        
+        # Aggiorna il dizionario PP della classe
+        self.PP = updated_PP
+
         
     def Stat_Calculate(self):
         Stat_Calculated = {}
@@ -60,9 +78,8 @@ class Battlers:
                 Stat_Calculated[Stat] *= Low
         for stat, molt in assets.Stats.items():
             Stat_Calculated[stat] *= molt
-        if not self.isEnemy:
-            for stat in ["ATT","MAGIC","DIF","FUN","VEL"]:
-                Stat_Calculated[stat] + self.modificator[stat]
+        for stat in ["ATT","MAGIC","DIF","FUN","VEL"]:
+            Stat_Calculated[stat] += self.modificator[stat]
         return Stat_Calculated
 
 
@@ -101,6 +118,8 @@ class Battlers:
         return damage
     
     def useMove(self, move, enemy):
+        if move in self.PP:
+            self.PP[move] -= 1
         if self.state in status.SkipTurn:
             Resisten = 0
             for type in BattlersType[self.type]["types"]:
@@ -255,12 +274,21 @@ class Battlers:
         # Calcola dimensioni del font per le informazioni
         info_font_size = round(W / 15)
         InformationFont = pygame.font.SysFont(None, info_font_size)
+
+        # Calcola dimensioni del font per la descrizione
+        info_font_size = round(W / 20)
+        DexFont = pygame.font.SysFont(None, info_font_size)
+
+        #PP
+        PPText = f"PP: {self.PP[move]}"
+        PP = InformationFont.render(PPText, True, TextColor)
+        PPRect = PP.get_rect(topleft=(5, TitleRect.bottom + 5))
         
         # Base Power
         power = MoveData.get("BasePower", "--")
         PowerText = f"Power: {power}"
         Power = InformationFont.render(PowerText, True, TextColor)
-        PowerRect = Power.get_rect(topleft=(5, TitleRect.bottom + 5))
+        PowerRect = Power.get_rect(topleft=(5, PPRect.bottom + 5))
 
         # Precisione
         precisione = MoveData.get("precisione", "--")
@@ -270,16 +298,101 @@ class Battlers:
 
         #Dex
         if "Dex" in MoveData:
-            Rect = pygame.rect.Rect(5,PrecisionRect.bottom + 10, W-10, H-10)
-            F.draw_text_within(MoveSurface, MoveData["Dex"], Rect, InformationFont, TextColor)
+            Rect = pygame.rect.Rect(5,PrecisionRect.bottom + 6, W-10, H-10)
+            F.draw_text_within(MoveSurface, MoveData["Dex"], Rect, DexFont, TextColor)
 
         # Aggiunge gli elementi alla superficie
         MoveSurface.blit(Title, TitleRect)
+        MoveSurface.blit(PP, PPRect)
         MoveSurface.blit(Power, PowerRect)
         MoveSurface.blit(Precision, PrecisionRect)
 
         return MoveSurface
 
+    def GestisciMosse(self,screen):
+        MoveSurface = None
+        self.Calcolate_New_learnable_move()
+        TheOtherMoves = F.Sottrai_liste(self.LearnableMoves, self.moves)
+        while True:
+            MoveRects = []
+            screen.fill((0,10,50))
+            WIDTH, HEIGHT = screen.get_size()
+            W, H = WIDTH/3, HEIGHT*0.85
+            CurrentMove =  pygame.surface.Surface((W, H))
+            CurrentMove.fill((255,255,255))
+            Sfont = pygame.font.SysFont(None, round(H/12))
+            for i, move in enumerate(self.moves):
+                Rect = pygame.rect.Rect((10, 50 * (i+1), 350, 45))
+                pygame.draw.rect(CurrentMove, TypesColor[MOVES[move]["type"]], Rect)
+                if F.is_color_light(TypesColor[MOVES[move]["type"]]):
+                    color = (0,0,0)
+                else:
+                    color = (255,255,255)
+                Text = Sfont.render(move, True, color)
+                h = Text.get_height()
+                CurrentMove.blit(Text, (20, 50 * (i+1) + 45/2-h/2))
+                Rect.x += WIDTH/5-W/2
+                Rect.y += HEIGHT/2-H/2
+                MoveRects.append(Rect)
+            screen.blit(CurrentMove, (WIDTH/5-W/2, HEIGHT/2-H/2))
+            information = pygame.surface.Surface((WIDTH/4 * 2.5, HEIGHT*0.85))
+            W, H = information.get_size()
+            information.fill((255,255,255))
+            otherMoveRects = []
+            for i, move in enumerate(TheOtherMoves):    
+                if F.is_color_light(TypesColor[MOVES[move]["type"]]):
+                    color = (0,0,0)
+                else:
+                    color = (255,255,255)
+                Text = Sfont.render(move, True, color)
+                h = Text.get_height()
+                if i == 0:
+                    Rect = pygame.rect.Rect((10, 50, 350, 45))
+                    TextPosition = (20, 50)
+                elif (i+1) % 2 == 0:
+                    Rect = pygame.rect.Rect((380, 50 * (1+round(i/2.1)), 350, 45))
+                    TextPosition = (390, 50 * (1+round(i/2.1)))
+                else:
+                    Rect = pygame.rect.Rect((10, 50 * (1+round(i/2.1)), 350, 45))
+                    TextPosition = (20, 50 * (1+round(i/2.1)))
+                pygame.draw.rect(information, TypesColor[MOVES[move]["type"]], Rect)  
+                information.blit(Text, TextPosition)
+                Rect.x += WIDTH-W
+                Rect.y += HEIGHT/2-H/2
+                otherMoveRects.append(Rect)
+            screen.blit(information, (WIDTH-W, HEIGHT/2-H/2))
+            if MoveSurface is not None:
+                MH = MoveSurface.get_height()
+                screen.blit(MoveSurface, (0,HEIGHT-MH))
+            pygame.display.update()
+            for event in pygame.event.get():
+                Cycles.BaseCicle(event)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    HaCliccato = True
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    for i, rect in enumerate(MoveRects):
+                        if rect.collidepoint(mouse_x, mouse_y):
+                            HaCliccato = False
+                            if event.button == 1:  # Bottone sinistro del mouse
+                                MoveSurface = self.MakeMoveInformaionSurface(screen, self.moves[i])
+                            elif event.button == 3:  # Bottone destro del mouse
+                                TheOtherMoves.append(self.moves.pop(i))
+                    for i, rect in enumerate(otherMoveRects):
+                        if rect.collidepoint(mouse_x, mouse_y):
+                            HaCliccato = False
+                            if event.button == 1:  # Bottone sinistro del mouse
+                                MoveSurface = self.MakeMoveInformaionSurface(screen, TheOtherMoves[i])
+                            elif event.button == 3:  # Bottone destro del mouse
+                                if len(self.moves) < 4:
+                                    self.moves.append(TheOtherMoves.pop(i))
+                    if HaCliccato:
+                        MoveSurface = None
+        
+                        
+            
 
     def ViewInformation(self, screen):
         Page = 0
@@ -377,19 +490,26 @@ class Battlers:
                     Text = Sfont.render(f"{stat}: {round(value)}", True, (0,0,0))
                     information.blit(Text, (MaxLenght + 80, 50*(i+1)))
                 for i, move in enumerate(self.moves):
-                    if move != "-":
-                        Rect = pygame.rect.Rect((10, 50 * (i+8), 350, 45))
-                        pygame.draw.rect(information, TypesColor[MOVES[move]["type"]], Rect)
-                        if F.is_color_light(TypesColor[MOVES[move]["type"]]):
-                            color = (0,0,0)
-                        else:
-                            color = (255,255,255)
-                        Text = Sfont.render(move, True, color)
-                        h = Text.get_height()
-                        information.blit(Text, (20, 50 * (i+8) + 45/2-h/2))
-                        Rect.x += WIDTH-W
-                        Rect.y += HEIGHT/2-H/2
-                        MoveRects.append(Rect)
+                    Rect = pygame.rect.Rect((10, 50 * (i+8), 350, 45))
+                    pygame.draw.rect(information, TypesColor[MOVES[move]["type"]], Rect)
+                    if F.is_color_light(TypesColor[MOVES[move]["type"]]):
+                        color = (0,0,0)
+                    else:
+                        color = (255,255,255)
+                    Text = Sfont.render(move, True, color)
+                    h = Text.get_height()
+                    information.blit(Text, (20, 50 * (i+8) + 45/2-h/2))
+                    Rect.x += WIDTH-W
+                    Rect.y += HEIGHT/2-H/2
+                    MoveRects.append(Rect)
+                Rect = pygame.rect.Rect((10, 50 * (i+9), 350, 45))
+                pygame.draw.rect(information, (200,200,200), Rect)
+                Text = Sfont.render("Gestisci Mosse", True, (0,0,0))
+                h = Text.get_height()
+                information.blit(Text, (20, 50 * (i+9) + 45/2-h/2))
+                Rect.x += WIDTH-W
+                Rect.y += HEIGHT/2-H/2
+                MoveRects.append(Rect)
                 if MoveSurface is not None:
                     MH = MoveSurface.get_height()
                     screen.blit(MoveSurface, (0,HEIGHT-MH))
@@ -415,8 +535,11 @@ class Battlers:
                             mouse_x, mouse_y = pygame.mouse.get_pos()
                             for i, rect in enumerate(MoveRects):
                                 if rect.collidepoint(mouse_x, mouse_y):
-                                    HaCliccato = False
-                                    MoveSurface = self.MakeMoveInformaionSurface(screen, self.moves[i])
+                                    if i == len(self.moves):
+                                        self.GestisciMosse(screen)
+                                    else:
+                                        HaCliccato = False
+                                        MoveSurface = self.MakeMoveInformaionSurface(screen, self.moves[i])
                             if HaCliccato:
                                 MoveSurface = None
                                     
@@ -455,6 +578,10 @@ class Battlers:
             self.maxHP = NewHP
             TEXT = dialog.dialoge(f"{self.type} è salito al livello {self.level}!!")
             TEXT.update(screen)
+            if str(self.level) in BattlersType[self.type]["moves"]:
+                for move in BattlersType[self.type]["moves"][str(self.level)]:
+                    TEXT = dialog.dialoge(f"{self.type} ha imparato una nuova mossa: {move}!!")
+                    TEXT.update(screen)
 
     def ExpToLevelUp(self):
         level = self.level
@@ -500,3 +627,19 @@ class Battlers:
                 Text.update(assets.screen)
                 Percet = self.maxHP / 100 * status.Damage[self.state]["%"]
                 self.HP -= Percet
+
+    def Calcolate_learnable_Moves(self):
+        self.LearnableMoves = BattlersType[self.type]["moves"]["start"].copy()
+        if self.natura in NaturMove:
+            self.LearnableMoves.extend(NaturMove[self.natura])
+        for i in range(1, self.level + 1):
+            if str(i) in BattlersType[self.type]["moves"]:
+                self.LearnableMoves.extend(BattlersType[self.type]["moves"][str(i)])
+        return list(dict.fromkeys(self.LearnableMoves))
+
+
+    def Calcolate_New_learnable_move(self):
+        self.LearnableMoves.extend(self.Calcolate_learnable_Moves())
+        #self.LearnableMoves.extend(["azione","Assorbi Luce","Chilling","Lanciare la pizza"])
+        self.LearnableMoves = list(dict.fromkeys(self.LearnableMoves))
+        self.UpdatePP()

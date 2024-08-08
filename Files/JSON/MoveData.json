@@ -4,14 +4,111 @@
         "MoveType": "Fisica",
         "BasePower": 40,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "Dex":"chi la usa usa azione",
+        "PP":35
+    },
+    "hur hur hur": {
+        "type": "meme",
+        "MoveType": "Magic",
+        "BasePower": 55,
+        "precisione": 100,
+        "target": "enemy",
+        "Dex":"o anche 'har har har har'",
+        "PP":30
+    },
+    "AssorbO2": {
+        "type": "spazio",
+        "MoveType": "Magic",
+        "BasePower": 35,
+        "precisione": 100,
+        "target": "enemy",
+        "ScriptDmage": ["AssorbiVita"],
+        "Dex":"chi la usa assorbe tutto l'O2 in modo che l'aversario non ne abbia",
+        "PP":25
+    },
+    "Coleomorso": {
+        "type": "insetto",
+        "MoveType": "Fisica",
+        "BasePower": 80,
+        "precisione": 95,
+        "target": "enemy",
+        "Dex":"chi la usa morde il nemico con forti mandibole",
+        "PP":15
+    },
+    "jumpscare": {
+        "type": "malvaggio",
+        "MoveType": "Fisica",
+        "BasePower": 40,
+        "precisione": 100,
+        "target": "enemy",
+        "Scripts":["Flitch"],
+        "FlitchChance":50,
+        "Dex":"chi la usa fa un jumpscare all'aversario facendolo tentennare molto spesso",
+        "PP":15
+    },
+    "ImmaginiAI": {
+        "type": "AI",
+        "MoveType": "Magic",
+        "BasePower": 65,
+        "precisione": 95,
+        "target": "enemy",
+        "color": [255, 255, 255],
+        "dimension": 60,
+        "animation":"LanciaPalle",
+        "Dex":"chi la usa lancia immagini generate con l'AI all'avversario",
+        "PP":30
+        
+    },
+    "Assorbi Luce": {
+        "type": "spazio",
+        "MoveType": "Magic",
+        "BasePower": 65,
+        "precisione": 100,
+        "target": "enemy",
+        "animation": "Brilla",
+        "color": [0, 0, 0],
+        "ScriptDmage": ["AssorbiVita"],
+        "Dex":"chi la usa assorbe la luce perchè nello spazio porfondo non c'è luce",
+        "PP":25
+    },
+    "Chilling": {
+        "type": "meme",
+        "MoveType": "State",
+        "target": "self",
+        "Scripts":["RigeneraVita"],
+        "Heal%":50,
+        "animation":"State",
+        "Dex":"chi la usa si chilla rigenerando meta della sua vita",
+        "PP":5
+    },
+    "Lanciare la pizza": {
+        "type": "cibo",
+        "MoveType": "Fisica",
+        "BasePower": 80,
+        "precisione": 85,
+        "target": "enemy",
+        "color": [255, 230, 0],
+        "dimension": 75,
+        "animation":"LanciaPalle",
+        "Dex":"Chi la usa lance la pizza margherita in faccia all'aversario",
+        "PP":20
+    },
+    "Spammare A": {
+        "type": "gamer",
+        "MoveType": "Magic",
+        "BasePower": 65,
+        "target": "enemy",
+        "Dex":"Chi la usa pamma A per schipare i dialoghi, dialoghi che l'avversario vuole leggere",
+        "PP":30
     },
     "Panschiaffo": {
         "type": "cibo",
         "MoveType": "Fisica",
         "BasePower": 55,
         "precisione": 95,
-        "target": "enemy"
+        "target": "enemy",
+        "PP":30
     },
     "dormire": {
         "type": "normale",
@@ -20,7 +117,8 @@
         "animation": "State",
         "Scripts": ["SLE"],
         "SLEChance": 100,
-        "Dex": "Chi la usa dorme"
+        "Dex": "Chi la usa dorme",
+        "PP":30
     },
     "ESPLOSIONE": {
         "type": "normale",
@@ -31,14 +129,16 @@
         "animation": "Brilla",
         "color": [255, 255, 255, 85],
         "Scripts": ["AfterDie"],
-        "Dex": "Chi la usa Esplode Morendo immediatamente"
+        "Dex": "Chi la usa Esplode Morendo immediatamente",
+        "PP":30
     },
     "Ferrartigli": {
         "type": "acciaio",
         "MoveType": "Fisica",
         "BasePower": 55,
         "precisione": 95,
-        "target": "enemy"
+        "target": "enemy",
+        "PP":30
     },
     "Ferroscudo": {
         "type": "acciaio",
@@ -53,7 +153,8 @@
         ],
         "target": "self",
         "animation": "State",
-        "Dex": "Chi la usa aumenta la sua difesa"
+        "Dex": "Chi la usa aumenta la sua difesa",
+        "PP":30
     },
     "Terremoto": {
         "type": "terra",
@@ -62,7 +163,8 @@
         "precisione": 100,
         "target": "enemy",
         "animation": "Brilla",
-        "color": [150, 50, 0, 85]
+        "color": [150, 50, 0, 85],
+        "PP":15
     },
     "smog": {
         "type": "veleno",
@@ -74,7 +176,19 @@
         "color": [150, 0, 150, 85],
         "Scripts": ["POI"],
         "POIChance": 10,
-        "Dex": "Può avvelenare l'avversario"
+        "Dex": "Può avvelenare l'avversario",
+        "PP":30
+    },
+    "Veleno schiaffo": {
+        "type": "veleno",
+        "MoveType": "Fisica",
+        "BasePower": 75,
+        "precisione": 100,
+        "target": "enemy",
+        "Scripts": ["POI"],
+        "POIChance": 15,
+        "Dex": "Può avvelenare l'avversario",
+        "PP":20
     },
     "Braciere": {
         "type": "fuoco",
@@ -87,7 +201,8 @@
         "dimension": 20,
         "Scripts": ["BRN"],
         "BRNChance": 5,
-        "Dex": "Può scottare l'avversario"
+        "Dex": "Può scottare l'avversario",
+        "PP":30
     },
     "???": {
         "type": "glitch",
@@ -100,7 +215,8 @@
         "dimension": 30,
         "Scripts": ["DRG"],
         "DRGChance": 5,
-        "Dex": "???"
+        "Dex": "???",
+        "PP":15
     },
     "Sassata": {
         "type": "sasso",
@@ -110,7 +226,8 @@
         "target": "enemy",
         "animation": "LanciaPalle",
         "color": [255, 200, 0],
-        "dimension": 10
+        "dimension": 10,
+        "PP":30
     },
     "Trhyhard": {
         "type": "gamer",
@@ -125,7 +242,8 @@
         ],
         "target": "self",
         "animation": "State",
-        "Dex": "Chi la usa aumenta l'attacco ed la magia"
+        "Dex": "Chi la usa aumenta l'attacco ed la magia",
+        "PP":30
     },
     "vento": {
         "type": "gas",
@@ -135,7 +253,9 @@
         "target": "enemy",
         "animation": "LanciaPalle",
         "color": [200, 200, 200],
-        "dimension": 15
+        "dimension": 15,
+        "Dex":"Chi la usa lancia del vento sull'avversario",
+        "PP":30
     },
     "Tuonoshock": {
         "type": "elettro",
@@ -148,7 +268,19 @@
         "dimension": 20,
         "Scripts": ["PAR"],
         "PARChance": 10,
-        "Dex": "Può causare la paralisi"
+        "Dex": "Può causare la paralisi",
+        "PP":30
+    },
+    "Conduttore": {
+        "type": "elettro",
+        "MoveType": "Fisica",
+        "BasePower": 70,
+        "precisione": 100,
+        "target": "enemy",
+        "Scripts": ["PAR"],
+        "PARChance": 15,
+        "Dex": "Può causare la paralisi",
+        "PP":20
     },
     "Tuononda": {
         "type": "elettro",
@@ -158,7 +290,8 @@
         "animation": "State",
         "Scripts": ["PAR"],
         "PARChance": 100,
-        "Dex": "Chi la usa paralizza l'avversario"
+        "Dex": "Chi la usa paralizza l'avversario",
+        "PP":10
     },
     "Morso": {
         "type": "normale",
@@ -168,7 +301,19 @@
         "target": "enemy",
         "FlitchChance": 20,
         "Scripts": ["Flitch"],
-        "Dex": "può far tentennare l'avversario"
+        "Dex": "può far tentennare l'avversario",
+        "PP":30
+    },
+    "Sgranocchio": {
+        "type": "normale",
+        "MoveType": "Fisica",
+        "BasePower": 80,
+        "precisione": 100,
+        "target": "enemy",
+        "FlitchChance": 33,
+        "Scripts": ["Flitch"],
+        "Dex": "può far tentennare l'avversario",
+        "PP":20
     },
     "Lanciafiamme": {
         "type": "fuoco",
@@ -181,7 +326,8 @@
         "dimension": 15,
         "Scripts": ["BRN"],
         "BRNChance": 12,
-        "Dex": "Può scottare l'avversario"
+        "Dex": "Può scottare l'avversario",
+        "PP":15
     },
     "Brilla": {
         "type": "luce",
@@ -201,7 +347,8 @@
         "color": [255, 255, 255, 85],
         "FlitchChance": 30,
         "Scripts": ["Flitch"],
-        "Dex": "Può sia Ridurre la precisione avversaria sia fallo tentennare"
+        "Dex": "Può sia Ridurre la precisione avversaria sia fallo tentennare",
+        "PP":10
     },
     "IPER RAGGIO": {
         "type": "magia",
@@ -214,7 +361,8 @@
         "color": [255, 255, 255],
         "dimension": 15,
         "sound": "drip.mp3",
-        "Dex": "Chi la usa lancia un raggio potentissimo che lo costringe a riposarsi al prossimo turno"
+        "Dex": "Chi la usa lancia un raggio potentissimo che lo costringe a riposarsi al prossimo turno",
+        "PP":5
     },
     "INVESTIRE": {
         "type": "malvaggio",
@@ -224,7 +372,8 @@
         "Scripts": ["AfterSkipTurn"],
         "target": "enemy",
         "sound": "drip.mp3",
-        "Dex": "Chi lo usa investe l'avversario, ma dopo deve riposare"
+        "Dex": "Chi lo usa investe l'avversario, ma dopo deve riposare",
+        "PP":5
     },
     "sanguisuga": {
         "type": "insetto",
@@ -233,7 +382,8 @@
         "precisione": 95,
         "ScriptDmage": ["AssorbiVita"],
         "target": "enemy",
-        "Dex": "Chi la usa succhia il sangue all'aversario curandosi"
+        "Dex": "Chi la usa succhia il sangue all'aversario curandosi",
+        "PP":20
     },
     "ronzio rompi palle": {
         "type": "insetto",
@@ -249,7 +399,8 @@
         "target": "self",
         "animation": "State",
         "sound": "pew.mp3",
-        "Dex": "Chi la usa fa rumori fastidiosi che aumentano la propria illusione"
+        "Dex": "Chi la usa fa rumori fastidiosi che aumentano la propria illusione",
+        "PP":10
     },
     "Ctrl+C Ctrl+V": {
         "type": "informatico",
@@ -265,7 +416,8 @@
         "target": "self",
         "animation": "State",
         "sound": "pew.mp3",
-        "Dex": "Chi la usa fa copia incolla su se stesso aumentando la propria illusione"
+        "Dex": "Chi la usa fa copia incolla su se stesso aumentando la propria illusione",
+        "PP":10
     },
     "inquinamento": {
         "type": "plastica",
@@ -277,7 +429,8 @@
         "FlitchChance": 5,
         "Scripts": ["Flitch", "POI"],
         "POIChance": 5,
-        "Dex": "Ha una piccola possibilita di avvelenare o far tentennare l'avversario"
+        "Dex": "Ha una piccola possibilita di avvelenare o far tentennare l'avversario",
+        "PP":30
     },
     "Dragoartigli": {
         "type": "drago",
@@ -287,21 +440,35 @@
         "target": "enemy",
         "FlitchChance": 5,
         "Scripts": ["Flitch"],
-        "Dex": "Ha una piccola possibilita di far tentennare l'avversario"
+        "Dex": "Ha una piccola possibilita di far tentennare l'avversario",
+        "PP":15
+    },
+    "Dragoassalto": {
+        "type": "drago",
+        "MoveType": "Fisica",
+        "BasePower": 150,
+        "precisione": 75,
+        "target": "enemy",
+        "FlitchChance": 10,
+        "Scripts": ["Flitch"],
+        "Dex": "Ha una possibilita di far tentennare l'avversario",
+        "PP":5
     },
     "Erba schiaffo": {
         "type": "erba",
         "MoveType": "Fisica",
         "BasePower": 55,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "PP":30
     },
     "Radice schiaffo": {
         "type": "erba",
         "MoveType": "Fisica",
         "BasePower": 110,
         "precisione": 100,
-        "target": "enemy"
+        "target": "enemy",
+        "PP":10
     },
     "taskkill": {
         "type": "informatico",
@@ -311,7 +478,8 @@
         "target": "enemy",
         "FlitchChance": 8,
         "Scripts": ["Flitch"],
-        "Dex": "Può far tentennare l'avversario"
+        "Dex": "Può far tentennare l'avversario",
+        "PP":15
     },
     "Pistolacqua": {
         "type": "acqua",
@@ -321,7 +489,19 @@
         "target": "enemy",
         "animation": "LanciaPalle",
         "color": [9, 200, 255],
-        "dimension": 20
+        "dimension": 25,
+        "PP":30
+    },
+    "Piscioacqua": {
+        "type": "acqua",
+        "MoveType": "Magic",
+        "BasePower": 65,
+        "precisione": 100,
+        "target": "enemy",
+        "animation": "LanciaPalle",
+        "color": [9, 220, 235],
+        "dimension": 30,
+        "PP":30
     },
     "Geloraggio": {
         "type": "ghiaccio",
@@ -331,7 +511,8 @@
         "target": "enemy",
         "animation": "LanciaPalle",
         "color": [100, 255, 255],
-        "dimension": 15
+        "dimension": 15,
+        "PP":15
     },
     "rickroll": {
         "type": "meme",
@@ -342,7 +523,8 @@
         "sound": "rick.mp3",
         "FlitchChance": 8,
         "Scripts": ["Flitch"],
-        "Dex": "può far tentennare l'aversario"
+        "Dex": "può far tentennare l'aversario",
+        "PP":20
     },
     "sparo": {
         "type": "pistola",
@@ -352,11 +534,12 @@
         "target": "enemy",
         "animation": "LanciaPalle",
         "color": [0, 0, 0],
-        "dimension": 30,
+        "dimension": 10,
         "sound": "gun.mp3",
         "FlitchChance": 8,
         "Scripts": ["Flitch"],
-        "Dex": "Chi la usa SPARA l'avversario con una piccola possibilità di farlo tentennare"
+        "Dex": "Chi la usa SPARA l'avversario con una piccola possibilità di farlo tentennare",
+        "PP":10
     },
     "ballo": {
         "type": "meme",
@@ -372,7 +555,8 @@
         "target": "self",
         "animation": "State",
         "sound": "drip.mp3",
-        "Dex": "Chi la usa fa un piccolo ballo che aumenta Attacco, Difesa e velocità"
+        "Dex": "Chi la usa fa un piccolo ballo che aumenta Attacco, Difesa e velocità",
+        "PP":20
     },
     "IMPOSTOR": {
         "type": "meme",
@@ -392,7 +576,8 @@
         "target": "self",
         "animation": "State",
         "sound": "sus.mp3",
-        "Dex": "Chi lo usa è molto SUS diminuendo la difesa ma aumentando di molto l'attacco"
+        "Dex": "Chi lo usa è molto SUS diminuendo la difesa ma aumentando di molto l'attacco",
+        "PP":20
     },
     "Machine Learning": {
         "type": "AI",
@@ -408,7 +593,8 @@
         "Scripts": ["AfterSkipTurn"],
         "target": "self",
         "animation": "State",
-        "Dex": "Chi la usa si allena a diventare più intelligente aumentando tutte le statistiche, ma il turno dopo deve riposare"
+        "Dex": "Chi la usa si allena a diventare più intelligente aumentando tutte le statistiche, ma il turno dopo deve riposare",
+        "PP":10
     },
     "VODKA": {
         "type": "veleno",
@@ -425,7 +611,8 @@
         "DRGChance": 100,
         "target": "self",
         "animation": "State",
-        "Dex": "Chi la usa ottiene lo sato DRG ma aumenta tutte le statistiche"
+        "Dex": "Chi la usa ottiene lo sato DRG ma aumenta tutte le statistiche",
+        "PP":10
     },
     "rugito": {
         "type": "normale",
@@ -441,7 +628,8 @@
         "target": "enemy",
         "animation": "State",
         "sound": "roar.mp3",
-        "Dex": "Chi lo usa diminuise l'attacco avversario"
+        "Dex": "Chi lo usa diminuise l'attacco avversario",
+        "PP":35
     },
     "Fissare": {
         "type": "normale",
@@ -462,7 +650,8 @@
         "target": "self",
         "animation": "State",
         "sound": "pew.mp3",
-        "Dex": "Chi la usa aumenta la propria precisione e diminuisce la difesa avversaria"
+        "Dex": "Chi la usa aumenta la propria precisione e diminuisce la difesa avversaria",
+        "PP":35
     },
     "carineria": {
         "type": "cute",
@@ -478,6 +667,7 @@
         ],
         "precisione": 90,
         "target": "enemy",
-        "Dex": "Può ridurre la propria difesa"
+        "Dex": "Può ridurre la propria difesa",
+        "PP":15
     }
 }

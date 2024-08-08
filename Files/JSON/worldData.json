@@ -7,36 +7,44 @@
         "Sole": 5,
         "Albero": 15,
         "Bidoof": 15,
-        "Creeper": 5
+        "Capibara":10,
+        "Creeper": 5,
+        "Alieno": 5,
+        "Coccinella":7
     },
     "cucina": {
-        "Pane": 45,
-        "Forchetta": 45,
-        "Zanzara": 5,
-        "Rubber duck": 5
+        "Pane": 30,
+        "Forchetta": 30,
+        "Biscotto": 30,
+        "Zanzara": 4,
+        "Rubber duck": 5,
+        "Coccinella":1
     },
     "spiaggia": {
         "Sole": 10,
         "Nuvola": 10,
         "SQUIT": 25,
         "Rubber duck": 25,
-        "Zanzara": 5,
+        "Zanzara": 4,
         "Wooper": 20,
-        "Pinguino": 5
+        "Pinguino": 5,
+        "Coccinella":1
     },
     "Stanza da gaming": {
-        "Pane": 5,
+        "Pane": 4,
         "PC da gaming": 40,
         "Cane": 7,
         "Cursore": 20,
         "ChatGPT": 15,
         "Zanzara": 1,
         "Rubber duck": 5,
-        "Gatto": 7
+        "Gatto": 7,
+        "Coccinella":1
     },
     "MemeWorld": {
-        "Gino": 30,
-        "Among us": 30,
+        "Gino": 20,
+        "Among us": 20,
+        "Capibara":20,
         "Gatto": 40
     },
     "pnf-404": {
@@ -59,6 +67,12 @@
         "Ferrari": 20,
         "Pettirosso": 10,
         "Dinosauro": 5,
-        "Gino": 5
+        "Gino": 5,
+        "Coccinella":5
+    },
+    "Spazio":{
+        "Alieno":50,
+        "Sole":10,
+        "Among us":40
     }
 }
