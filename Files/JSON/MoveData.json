@@ -8,12 +8,54 @@
         "Dex":"chi la usa usa azione",
         "PP":35
     },
+    "QUACK": {
+        "type": "meme",
+        "MoveType": "State",
+        "precisione": 100,
+        "Stat": [
+            {
+                "stats": ["DIF"],
+                "Power": 0.6,
+                "Target": "enemy"
+            },
+            {
+                "stats": ["FUN"],
+                "Power": 0.1,
+                "Target": "self"
+            }
+        ],
+        "target": "enemy",
+        "animation":"State",
+        "sound":"quack.mp3",
+        "Dex":"chi la usa Fa un rumore simile a Quak, che non solo è simile ma è proprio Quak",
+        "PP":25
+    },
+    "Beccata": {
+        "type": "volante",
+        "MoveType": "Fisica",
+        "BasePower": 35,
+        "precisione": 100,
+        "target": "enemy",
+        "Dex":"chi la usa usa usare l'uso del peccare",
+        "PP":30
+    },
+    "Aeroassalto": {
+        "type": "volante",
+        "MoveType": "Fisica",
+        "BasePower": 75,
+        "precisione": 95,
+        "target": "enemy",
+        "Dex":"chi la usa assalta l'avversario mentre è in volo",
+        "PP":20
+    },
     "hur hur hur": {
         "type": "meme",
         "MoveType": "Magic",
         "BasePower": 55,
         "precisione": 100,
         "target": "enemy",
+        "animation": "Brilla",
+        "color": [10,200,255,70],
         "Dex":"o anche 'har har har har'",
         "PP":30
     },

@@ -10,7 +10,10 @@
         "Capibara":10,
         "Creeper": 5,
         "Alieno": 5,
-        "Coccinella":7
+        "Coccinella":7,
+        "Rooper":15,
+        "Aeroplanino di plastica":4,
+        "Cavallo":10
     },
     "cucina": {
         "Pane": 30,
@@ -18,7 +21,8 @@
         "Biscotto": 30,
         "Zanzara": 4,
         "Rubber duck": 5,
-        "Coccinella":1
+        "Coccinella":1,
+        "Growlithe":5
     },
     "spiaggia": {
         "Sole": 10,
@@ -28,7 +32,10 @@
         "Zanzara": 4,
         "Wooper": 20,
         "Pinguino": 5,
-        "Coccinella":1
+        "Coccinella":1,
+        "Growlithe":10,
+        "Aeroplanino di plastica":6,
+        "Cavallo":3
     },
     "Stanza da gaming": {
         "Pane": 4,
@@ -39,13 +46,16 @@
         "Zanzara": 1,
         "Rubber duck": 5,
         "Gatto": 7,
-        "Coccinella":1
+        "Coccinella":1,
+        "Growlithe":2
     },
     "MemeWorld": {
         "Gino": 20,
         "Among us": 20,
         "Capibara":20,
-        "Gatto": 40
+        "Gatto": 40,
+        "Growlithe":20,
+        "Cavallo":5
     },
     "pnf-404": {
         "Red Pikmin": 1,
@@ -62,17 +72,32 @@
         "Zanzara": 5,
         "Freddy": 5,
         "Nuvola": 5,
-        "Sole": 5,
+        "Sole": 4,
         "Albero": 10,
         "Ferrari": 20,
         "Pettirosso": 10,
         "Dinosauro": 5,
         "Gino": 5,
-        "Coccinella":5
+        "Coccinella":5,
+        "Growlithe":5,
+        "Aeroplanino di plastica":10,
+        "Cavallo":20
     },
     "Spazio":{
         "Alieno":50,
         "Sole":10,
-        "Among us":40
-    }
+        "Among us":40,
+        "Aeroplanino di plastica":1
+    },
+    "Stagno":{
+        "Papera":40,
+        "Aeroplanino di plastica":5,
+        "Nuvola": 5,
+        "Zanzara":10,
+        "Wooper": 20,
+        "Rooper":25,
+        "Coccinella":5,
+        "Cavallo":2,
+        "Capibara":5
+   }
 }

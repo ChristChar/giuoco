@@ -83,10 +83,10 @@ def POI(screen, self, enemy, move):
                 self.state = "POI"
             Text.update(screen)
 
-        
-f = open('Files/JSON/MoveData.json')
 
-MOVES = json.load(f)
+with open('Files/JSON/MoveData.json', encoding='utf-8') as f:
+    MOVES = json.load(f)     
+
 
 for move_name, moveData in MOVES.items():
     if "animation" in moveData:

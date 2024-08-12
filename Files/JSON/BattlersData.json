@@ -220,7 +220,7 @@
         "FUN": 1,
         "ATT": 1
       },
-      "Dex": "Fissalo molto attentamente negli occhi e dimmi come ti senti"
+      "Dex": "Il sasso più bello che noi abbiamo mai visto, con noi intendo io e te e se non la pensi cosi ti picchio"
     },
     "Dinosauro": {
       "BaseStat": {
@@ -505,7 +505,7 @@
       },
       "types": ["erba", "terra"],
       "moves": {
-        "start": ["Terremoto", "Radice schiaffo"],"9":["Chilling"]
+        "start": ["Terremoto", "Radice schiaffo"],"12":["Chilling"]
       },
       "baseEXP": 128,
       "growth_rate": "Fast",
@@ -609,9 +609,9 @@
         "FUN": 40,
         "VEL": 95
       },
-      "types": ["normale", "drago"],
+      "types": ["normale", "drago", "volante"],
       "moves": {
-        "start": ["azione", "Dragoartigli", "rugito"]
+        "start": ["azione", "Dragoartigli", "rugito","Beccata"]
       },
       "baseEXP": 58,
       "growth_rate": "Fast",
@@ -665,7 +665,7 @@
     "Alieno": {
         "BaseStat": {
           "HP": 55,
-          "ATT": 13,
+          "ATT": 21,
           "MAGIC": 66,
           "DIF": 24,
           "FUN": 46,
@@ -702,6 +702,108 @@
             "ATT": 3
           },
           "Dex": "La coccinella è un grande predatore senza scrupoli"
+        },
+    "Growlithe": {
+            "BaseStat": {
+              "HP": 55,
+              "ATT": 70,
+              "MAGIC": 70,
+              "DIF": 47,
+              "FUN": 70,
+              "VEL": 60
+            },
+            "types": ["fuoco","meme"],
+            "moves": {
+              "start": ["Braciere","ballo"],"7":["rickroll"],"12":["Lanciafiamme"]
+            },
+            "baseEXP": 91,
+            "growth_rate": "Medium Slow",
+            "EVS": {
+              "ATT": 1
+            },
+            "Dex": "Growlithe is a good boy"
+          },
+    "Rooper": {
+            "BaseStat": {
+                "HP": 70,
+                "ATT": 55,
+                "MAGIC": 25,
+                "DIF": 75,
+                "FUN": 50,
+                "VEL": 35
+            },
+            "types": ["sasso","erba"],
+            "moves": {
+            "start": ["Sassata","Erba schiaffo"],"9":["Radice schiaffo"]
+            },
+            "baseEXP": 95,
+            "growth_rate": "Medium Fast",
+            "EVS": {
+            "DIF": 1
+            },
+            "Dex": "Cosa? Wooper? cos'è Wooper? non ne ho mai sentito parlare, io conosco solo Rooper"
+        },
+    "Aeroplanino di plastica": {
+            "BaseStat": {
+                "HP": 85,
+                "ATT": 93,
+                "MAGIC": 27,
+                "DIF": 55,
+                "FUN": 32,
+                "VEL": 125
+            },
+            "types": ["plastica","volante"],
+            "moves": {
+            "start": ["inquinamento","Aeroassalto"],"7":["ballo"]
+            },
+            "baseEXP": 102,
+            "growth_rate": "Medium Slow",
+            "EVS": {
+            "VEL": 1
+            },
+            "Dex": "Meglio l'aerplanino di plastica di quello di carta perchè inquina di più =). Gli piace ballare. Comunque il nome che è troppo lungo ed non viene visuallizato per intero non è un bug, è una feature"
+        },
+    "Papera": {
+        "BaseStat": {
+            "HP": 95,
+            "ATT": 124,
+            "MAGIC": 23,
+            "DIF": 45,
+            "FUN": 68,
+            "VEL": 94
+        },
+        "types": ["acqua","volante"],
+        "moves": {
+            "start": ["Pistolacqua","Beccata"],"6":["QUACK"],"8":["Piscioacqua"],"12":["jumpscare"]
+        },
+        "baseEXP": 123,
+        "growth_rate": "Medium Fast",
+        "EVS": {
+            "ATT": 1,
+            "VEL": 1
+        },
+        "Dex": "QUACK, io sono la vera papera, non confonderti con la versione tarocca di plastica, è solo un giocattolo, STUPIDO"
+        },
+    "Cavallo": {
+        "BaseStat": {
+            "HP": 75,
+            "ATT": 150,
+            "MAGIC": 49,
+            "DIF": 68,
+            "FUN": 54,
+            "VEL": 136
+        },
+        "types": ["normale","informatico"],
+        "moves": {
+            "start": ["taskkill","Morso"],"7":["Sgranocchio"],"10":["Ctrl+C Ctrl+V"]
+        },
+        "baseEXP": 156,
+        "growth_rate": "Slow",
+        "EVS": {
+            "ATT": 1,
+            "VEL": 1
+        },
+        "Dex": "Un cavallo prorpio non è"
         }
   }
   

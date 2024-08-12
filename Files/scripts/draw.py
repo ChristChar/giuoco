@@ -49,7 +49,8 @@ def Stat_Menu(screen):
     for i, stat in enumerate(data.Stats):
         StatText = Font.render(f"{stat}: {assets.Stats[i]}", True, (0,0,0))
         screen.blit(StatText, (W/2.5, H/2-He*(3-i)-(50-i*10)))
-        screen.blit(Arrow, (W/1.7, H/2-He*(3-i)-(50-i*10)))
+        if assets.Stats[i] in assets.costo:
+            screen.blit(Arrow, (W/1.7, H/2-He*(3-i)-(50-i*10)))
         assets.ArrowRects.append(pygame.rect.Rect((W/1.7, H/2-He*(3-i)-(50-i*10), He, He)))
 
 

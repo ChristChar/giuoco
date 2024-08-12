@@ -75,7 +75,7 @@ def Stats(event):
         if event.button == 1:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             for i, rect in enumerate(assets.ArrowRects):
-                if rect.collidepoint(mouse_x, mouse_y):
+                if assets.Stats[i] in assets.costo and rect.collidepoint(mouse_x, mouse_y):
                     input = ctypes.windll.user32.MessageBoxW(None, f"Vuoi spedere {assets.costo[assets.Stats[i]]} punti per Upgredare {data.Stats[i]}", "Game", 0x00000004)
                     if input == 6:
                         if assets.score >= assets.costo[assets.Stats[i]]:

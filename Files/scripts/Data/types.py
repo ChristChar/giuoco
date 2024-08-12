@@ -31,4 +31,7 @@ TypesColor = {"fuoco":(255,180,0),
                 "gamer":(random.randint(100,255),random.randint(100,255),random.randint(100,255)),
                 "spazio":(0,0,50),
                 "glitch":(0,0,0),
-                "cibo":(222, 184, 135)}
+                "cibo":(222, 184, 135),
+                "lotta":(255,255,0),
+                "volante":(150,170,220),
+                "carta":(245,245,245)}

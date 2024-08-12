@@ -18,7 +18,7 @@ for i, X in enumerate(StatX):
     StatX[i] = float(X) 
 assets.Stats = StatX
 
-assets.costo = {1.0:10,1.1:20,1.2:30,1.3:50,1.4:65,1.5:80,1.6:95,1.7:110,1.8:130,1.9:150}
+assets.costo = {1.0:20,1.1:40,1.2:60,1.3:100,1.4:130,1.5:160,1.6:200,1.7:250,1.8:280,1.9:300}
 
 pygame.init()
 

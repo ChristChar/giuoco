@@ -21,7 +21,9 @@ squadra = [Battlers(random.choice(list(BattlersType.keys())), 5)]
 
 Gino1 = squadra[0]
 
-ToNextWorld = random.randint(5,15)
+ToNextWorld = random.randint(5,10)
+
+NTurn = 1
 
 def CuraSquadra():
     for battler in squadra:
@@ -88,7 +90,7 @@ def DrawBattleSelection(screen):
         screen.blit(surface, (Width-scaleX, Height - scale))
 
 def EndTurnChecks(screen):
-    global Gino2, Gino1, Level,CurrentBattleAction, ToNextWorld
+    global Gino2, Gino1, Level,CurrentBattleAction, ToNextWorld, NTurn
     Return = True
     Change = False
     if Gino1.HP < 1:
@@ -106,13 +108,14 @@ def EndTurnChecks(screen):
     if Gino2.HP < 1:
         Death(screen, Gino2, Gino1, True)
         if ToNextWorld <= 0:
-            ToNextWorld = random.randint(5,15)
+            ToNextWorld = random.randint(5,10)
             assets.World = random.choice(list(world.World.keys()))
             CuraSquadra()
         if Return:
             Gino1.ExpDropped(Gino2, screen)
         Gino2 = RandomizeEnemy()
-        Level += random.choice([0,0,0,0,0,1,1,1,2,-1,-1])
+        NTurn = 1
+        Level += random.choice([0,0,0,1,1,1,1,2])
         Level = max(1,Level)
         assets.score += 1
         Return = False
@@ -121,7 +124,7 @@ def EndTurnChecks(screen):
     if Change:
         Gino1 = None
         while Gino1 is None:
-            ViewTeam(screen)
+            ViewTeam(screen, False)
     return Return
 
 def PlayerTurn(screen, playerMove):
@@ -147,13 +150,14 @@ def EnemyTurn(screen, a):
         Text = dialog.dialoge(Gino2.type + " Ha tentennato")
         Text.update(screen)
     else:
-        move = AI.AI(Gino2, 0, 0)
+        move = AI.AI(Gino2, NTurn, Gino2.AI, Gino1)
         Gino2.useMove(move, Gino1)
         Gino1.drawStateBar(screen, False)
 
 
 
 def Turn(screen, playerMove):
+    global NTurn
     TurnOrder = [PlayerTurn, EnemyTurn]
     if Gino1.Stat_Calculate()["VEL"] > Gino2.Stat_Calculate()["VEL"]:
         TurnOrder = [PlayerTurn, EnemyTurn]
@@ -165,8 +169,10 @@ def Turn(screen, playerMove):
     if EndTurnChecks(screen):
         TurnOrder[1](screen, playerMove)
     Gino2.StatusCheck()
-    Gino1.StatusCheck()
+    Gino1.StatusCheck() 
+    NTurn += 1
     EndTurnChecks(screen)
+   
 
 def Make_Right_click_window(screen, MousePosition, Position):
     Width, Height = screen.get_size()
@@ -198,7 +204,7 @@ def Make_Right_click_window(screen, MousePosition, Position):
     
     return Surface, Rects
 
-def ViewTeam(screen):
+def ViewTeam(screen, switch = True):
     global Gino1
     rects = []
     RightClick = False
@@ -256,6 +262,9 @@ def ViewTeam(screen):
                                     BattlerRightClicked.ViewInformation(screen)
                                 elif Option == "cambia":
                                     Gino1 = BattlerRightClicked
+                                    if switch:
+                                        EnemyTurn(screen,1)
+                                        return
                                 elif Option == "libera":
                                     if len(squadra) > 1 and BattlerRightClicked != Gino1:
                                         squadra.remove(BattlerRightClicked)                     

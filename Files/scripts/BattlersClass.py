@@ -34,6 +34,8 @@ class Battlers:
         self.maxHP = MAXHP
         self.PP = {}
         self.ResetPP()
+        if isEnemy:
+            self.AI = 2 #random.randint(0,2)
 
 
 
@@ -76,12 +78,19 @@ class Battlers:
         if self.state in status.LowerStat:
             for Stat, Low in list(status.LowerStat[self.state].items()):
                 Stat_Calculated[Stat] *= Low
-        for stat, molt in assets.Stats.items():
-            Stat_Calculated[stat] *= molt
+        if not self.isEnemy:
+            for stat, molt in assets.Stats.items():
+                Stat_Calculated[stat] *= molt
         for stat in ["ATT","MAGIC","DIF","FUN","VEL"]:
-            Stat_Calculated[stat] += self.modificator[stat]
+             Stat_Calculated[stat] = max(Stat_Calculated[stat] + self.modificator[stat], 1)
         return Stat_Calculated
 
+    def Calcolate_typeBoost(self, move, enemy):
+        TypeBoost = 1
+        for EnemyType in BattlersType[enemy.type]["types"]:
+            if MOVES[move]["type"] in types[EnemyType]:
+                TypeBoost *= types[EnemyType][MOVES[move]["type"]]
+        return TypeBoost
 
     def Damage_Calculate(self, move, enemy):
         if MOVES[move]["MoveType"] == "Fisica":
@@ -96,20 +105,17 @@ class Battlers:
             Text.update(assets.screen)
         Roll = random.uniform(-0.05,0.05)
         damage *= (1 + Roll)  
-        TypeBust = 1
-        for EnemyType in BattlersType[enemy.type]["types"]:
-            if MOVES[move]["type"] in types[EnemyType]:
-                TypeBust *= types[EnemyType][MOVES[move]["type"]]
+        TypeBust = self.Calcolate_typeBoost(move, enemy)
         damage *= TypeBust
         if TypeBust == 0:
             Text = dialog.dialoge("Non ha effetto")
             Text.update(assets.screen)
             return 0
         elif TypeBust > 1:
-            Text = dialog.dialoge("è super efficace!!")
+            Text = dialog.dialoge(f"è super efficace per {round(TypeBust, 2)}!!")
             Text.update(assets.screen)
         elif TypeBust < 1:
-            Text = dialog.dialoge("non è molto efficace")
+            Text = dialog.dialoge(f"non è molto efficace per {round(TypeBust, 2)}")
             Text.update(assets.screen)
         
         if MOVES[move]["type"] in BattlersType[self.type]["types"]:
